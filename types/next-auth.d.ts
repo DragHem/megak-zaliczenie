@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { User } from "next-auth";
 
 declare module "next-auth" {
   /**
@@ -9,6 +9,9 @@ declare module "next-auth" {
       image: string;
       /** The user's postal address. */
       address: string;
+      email: string;
+      // followedByIDs: User[];
+      // followingIDs: User[];
     };
   }
 }
