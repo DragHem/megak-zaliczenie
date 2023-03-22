@@ -28,20 +28,21 @@ export default function Home() {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  if (session) {
-    const user = await client.user.findUnique({
-      where: {
-        email: session.user.email,
-      },
-      include: {
-        kitty: true,
-      },
-    });
+
+    // @ts-ignore
+    const user = await client.product.create({
+      data:{
+        name:"ccc",
+        price:22,
+
+      }
+    })
 
     console.log(user);
-  }
+
 
   return {
     props: {},
   };
 };
+

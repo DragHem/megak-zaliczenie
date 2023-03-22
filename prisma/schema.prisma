@@ -60,15 +60,15 @@ model User {
   password       String?
   nickname       String?
   isVirtual      Boolean?  @default(false)
-  createdAt      DateTime? @default(now())
+  createdAt      DateTime @default(now())
   isActive       Boolean   @default(false)
   changePassword String?
   kittys         Kitty[]
 
-  friends String[] @db.ObjectId
+  ProductIDs String[]  @db.ObjectId
+  products   Product[] @relation(fields: [ProductIDs], references: [id])
 
-  Product   Product? @relation(fields: [productId], references: [id])
-  productId String?  @db.ObjectId
+  friends String[] @db.ObjectId
 }
 
 model Product {
@@ -76,10 +76,11 @@ model Product {
   name  String
   price Float
 
+  userIDs String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIDs], references: [id])
+
   Kitty   Kitty?  @relation(fields: [kittyId], references: [id])
   kittyId String? @db.ObjectId
-
-  users User[]
 }
 
 model Kitty {
@@ -94,6 +95,8 @@ model Kitty {
   totalValue     Float    @default(0)
   isEnded        Boolean  @default(false)
   receiptsPhotos Bytes?
+
+  users String[] @db.ObjectId
 
   products Product[]
 }
