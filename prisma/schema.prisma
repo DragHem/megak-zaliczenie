@@ -69,6 +69,7 @@ model User {
   products   Product[] @relation(fields: [ProductIDs], references: [id])
 
   friends String[] @db.ObjectId
+  pendingInvites String[] @db.ObjectId
 }
 
 model Product {
