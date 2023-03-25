@@ -40,6 +40,45 @@ export abstract class UserService {
     });
   }
 
+  public static async getOutgoingInvitations(id: string) {
+    const ids = await client.user.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        outgoingInvitations: true,
+      },
+    });
+    if (ids) {
+      return await this.getUserFriends(ids.outgoingInvitations);
+    }
+  }
+
+  public static async getIncomingInvitations(id: string) {
+    const ids = await client.user.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        incomingInvitations: true,
+      },
+    });
+    if (ids) {
+      return await this.getUserFriends(ids.incomingInvitations);
+    }
+  }
+
+  public static async incomingInvitations(id: string) {
+    return await client.user.findMany({
+      where: {
+        id,
+      },
+      select: {
+        incomingInvitations: true,
+      },
+    });
+  }
+
   public static async createUser(
     name: string,
     email: string,
@@ -47,20 +86,14 @@ export abstract class UserService {
     nickname: string
   ) {
     //@toDo dodać walidację
-    try {
-      return await client.user.create({
-        data: {
-          name,
-          email,
-          password,
-          nickname,
-        },
-      });
-    } catch (e: any) {
-      return e.code === "P2002"
-        ? { message: "This email already exist" }
-        : e.message;
-    }
+    return await client.user.create({
+      data: {
+        name,
+        email,
+        password,
+        nickname,
+      },
+    });
   }
 
   public static async updateUser(
@@ -100,7 +133,6 @@ export abstract class UserService {
   }
 
   public static async sendFriendRequest(userId: string, friendId: string) {
-    //@toDo do przemyślenia sprawdzanie czy zaproszenie już istnieje
     const userResponse = await client.user.update({
       where: { id: userId },
       data: {
