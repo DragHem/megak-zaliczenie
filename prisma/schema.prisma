@@ -65,11 +65,11 @@ model User {
   changePassword String?
   kittys         Kitty[]
 
-  ProductIDs String[]  @db.ObjectId
-  products   Product[] @relation(fields: [ProductIDs], references: [id])
-
-  friends String[] @db.ObjectId
-  pendingInvites String[] @db.ObjectId
+  ProductIDs          String[]  @db.ObjectId
+  products            Product[] @relation(fields: [ProductIDs], references: [id])
+  outgoingInvitations String[]  @db.ObjectId
+  incomingInvitations String[]  @db.ObjectId
+  friends             String[]  @db.ObjectId
 }
 
 model Product {
