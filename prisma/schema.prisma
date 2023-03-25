@@ -59,16 +59,17 @@ model User {
 
   password       String?
   nickname       String?
-  isVirtual      Boolean?  @default(false)
+  isVirtual      Boolean? @default(false)
   createdAt      DateTime @default(now())
-  isActive       Boolean   @default(false)
+  isActive       Boolean  @default(false)
   changePassword String?
   kittys         Kitty[]
 
-  ProductIDs String[]  @db.ObjectId
-  products   Product[] @relation(fields: [ProductIDs], references: [id])
-
-  friends String[] @db.ObjectId
+  ProductIDs          String[]  @db.ObjectId
+  products            Product[] @relation(fields: [ProductIDs], references: [id])
+  outgoingInvitations String[]  @db.ObjectId
+  incomingInvitations String[]  @db.ObjectId
+  friends             String[]  @db.ObjectId
 }
 
 model Product {
