@@ -59,9 +59,9 @@ model User {
 
   password       String?
   nickname       String?
-  isVirtual      Boolean? @default(false)
+  isVirtual      Boolean?  @default(false)
   createdAt      DateTime @default(now())
-  isActive       Boolean  @default(false)
+  isActive       Boolean   @default(false)
   changePassword String?
   kittys         Kitty[]
 
