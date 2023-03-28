@@ -1,9 +1,7 @@
 import client from "../lib/prismadb";
-import { mockSession } from "next-auth/client/__tests__/helpers/mocks";
-import user = mockSession.user;
 
 export abstract class UserService {
-  public static async getUser(email: string, id: string) {
+  public static async getUser(email: string, id?: string) {
     return await client.user.findFirst({
       where: {
         OR: [
@@ -88,7 +86,6 @@ export abstract class UserService {
     password: string,
     nickname: string
   ) {
-    //@toDo dodać walidację
     return await client.user.create({
       data: {
         name,
