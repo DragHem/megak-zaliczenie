@@ -3,6 +3,7 @@ import { UserService } from "../../../services/userService";
 import validator from "validator";
 import { Signup } from "../../../interfaces/signup/signup";
 import { PasswordModule } from "../../../lib/passwordModule";
+import { MailModule } from "../../../lib/mailModule";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
@@ -55,7 +56,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         nickname
       );
 
-      if (newUser) {
+      const verifyMail = await MailModule.sendMail(
+        email,
+        "Kitty Project - Rejestracja",
+        `Tutaj będzie link`,
+        "Kitty Project - Rejestracja"
+      );
+
+      if (newUser && verifyMail) {
         res.status(201).json({
           message: "Rejestracja przebiegła pomyślnie.",
           status: "Success",
