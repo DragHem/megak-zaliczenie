@@ -12,6 +12,9 @@ export abstract class UserService {
         nickname: true,
         kittys: true,
         friends: true,
+        isActive: true,
+        isVirtual: true,
+        password: true,
       },
     });
   }
