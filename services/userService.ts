@@ -84,7 +84,8 @@ export abstract class UserService {
     name: string,
     email: string,
     password: string,
-    nickname: string
+    nickname: string,
+    activationLink: string
   ) {
     return await client.user.create({
       data: {
@@ -92,6 +93,7 @@ export abstract class UserService {
         email,
         password,
         nickname,
+        activationLink,
       },
     });
   }
