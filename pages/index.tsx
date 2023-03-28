@@ -19,7 +19,8 @@ export default function Home() {
 
   return (
     <div>
-      <img src={data.user.image} alt="" />
+      <h2>Jesteś zalogowany!</h2>
+      {/*<img src={data.user.image} alt="" />*/}
       <br />
       <button onClick={() => signOut()}>Sign out</button>
       <br />
@@ -30,14 +31,10 @@ export default function Home() {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  const resp = await UserService.getUserKittysActive(
-    "641edd7c87cac162fa64d757"
-  );
-  // @ts-ignore
-  //console.log(resp2);
+  const resp = await KittyService.getKittys("641edd7c87cac162fa64d757");
+  console.log(resp);
+  const resp2 = await KittyService.getKittys("641b331fce7e74f75835c4b8");
   console.log(resp2);
-  // @ts-ignore
-  // console.log(resp.kittys[16]);
   return {
     props: {},
   };

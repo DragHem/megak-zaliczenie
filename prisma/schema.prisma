@@ -63,6 +63,7 @@ model User {
   createdAt      DateTime @default(now())
   isActive       Boolean  @default(false)
   changePassword String?
+  activationLink String?
   kittys         Kitty[]
 
   ProductIDs          String[]  @db.ObjectId
