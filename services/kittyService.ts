@@ -66,6 +66,37 @@ export abstract class KittyService {
     });
   }
 
+  public static async addUserToKitty(id: string, user: string) {
+    return await client.kitty.update({
+      where: { id },
+      data: {
+        users: {
+          push: user,
+        },
+      },
+    });
+  }
+
+  public static async deleteUserFromKitty(id: string, user: string) {
+    const resp = await client.kitty.findFirst({
+      where: { id },
+      select: {
+        users: true,
+      },
+    });
+    if (resp != null) {
+      const { users } = resp;
+      return await client.kitty.update({
+        where: { id },
+        data: {
+          users: {
+            set: users.filter((x) => x != user),
+          },
+        },
+      });
+    }
+  }
+
   public static async deleteProductFromKitty(
     products: { id: string }[],
     id: string
@@ -74,10 +105,17 @@ export abstract class KittyService {
       where: { id },
       data: {
         products: {
-          deleteMany: {
-            data: [{ id: "642321edd03233cb031f3975" }],
-          },
+          deleteMany: products,
         },
+      },
+    });
+  }
+
+  public static async changeStatus(id: string, isEnded: boolean) {
+    return await client.kitty.update({
+      where: { id },
+      data: {
+        isEnded: !isEnded,
       },
     });
   }
