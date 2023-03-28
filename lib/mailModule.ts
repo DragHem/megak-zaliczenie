@@ -6,8 +6,8 @@ export abstract class MailModule {
     port: 465,
     secure: true,
     auth: {
-      user: "kittyproject@o2.pl",
-      pass: "trudnehaslo123",
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
     },
   });
 

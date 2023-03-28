@@ -4,6 +4,7 @@ import validator from "validator";
 import { Signup } from "../../../interfaces/signup/signup";
 import { PasswordModule } from "../../../lib/passwordModule";
 import { MailModule } from "../../../lib/mailModule";
+import uniqueString from "unique-string";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
@@ -49,17 +50,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       const hashedPassword = await PasswordModule.hashValue(password);
 
+      const activationLink = uniqueString();
+
       const newUser = await UserService.createUser(
         name,
         email,
         hashedPassword,
-        nickname
+        nickname,
+        activationLink
       );
 
+      //@todo Trzeba dodać link jak zrobimy już stronę do aktywacji.
       const verifyMail = await MailModule.sendMail(
         email,
         "Kitty Project - Rejestracja",
-        `Tutaj będzie link`,
+        `Tutaj będzie link - ${activationLink}`,
         "Kitty Project - Rejestracja"
       );
 
