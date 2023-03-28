@@ -1,4 +1,5 @@
 import client from "../lib/prismadb";
+import { KittyService } from "./kittyService";
 
 export abstract class UserService {
   public static async getUser(email: string, id?: string) {
@@ -194,5 +195,55 @@ export abstract class UserService {
         },
       });
     }
+  }
+
+  public static async getUserKittysEnded(id: string) {
+    return await client.user.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        kittys: {
+          where: { isEnded: true },
+          select: {
+            products: true,
+            id: true,
+            userId: true,
+            name: true,
+            createdAt: true,
+            description: true,
+            totalValue: true,
+            isEnded: true,
+            receiptsPhotos: true,
+            users: true,
+          },
+        },
+      },
+    });
+  }
+
+  public static async getUserKittysActive(id: string) {
+    return await client.user.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        kittys: {
+          where: { isEnded: false },
+          select: {
+            products: true,
+            id: true,
+            userId: true,
+            name: true,
+            createdAt: true,
+            description: true,
+            totalValue: true,
+            isEnded: true,
+            receiptsPhotos: true,
+            users: true,
+          },
+        },
+      },
+    });
   }
 }
