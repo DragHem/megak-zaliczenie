@@ -119,4 +119,13 @@ export abstract class KittyService {
       },
     });
   }
+
+  public static async deleteKitty(id: string) {
+    return await client.kitty.update({
+      where: { id },
+      data: {
+        isVisible: false,
+      },
+    });
+  }
 }

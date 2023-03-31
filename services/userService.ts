@@ -199,6 +199,82 @@ export abstract class UserService {
     }
   }
 
+  public static async rejectFriendRequest(userId: string, friendId: string) {
+    const userResp = await client.user.findFirst({
+      where: { id: userId },
+      select: {
+        incomingInvitations: true,
+      },
+    });
+    const friendResp = await client.user.findFirst({
+      where: { id: friendId },
+      select: {
+        outgoingInvitations: true,
+      },
+    });
+
+    if (userResp) {
+      const { incomingInvitations } = userResp;
+      await client.user.update({
+        where: { id: userId },
+        data: {
+          incomingInvitations: {
+            set: incomingInvitations.filter((id) => id !== friendId),
+          },
+        },
+      });
+    }
+    if (friendResp) {
+      const { outgoingInvitations } = friendResp;
+      await client.user.update({
+        where: { id: friendId },
+        data: {
+          outgoingInvitations: {
+            set: outgoingInvitations.filter((id) => id !== userId),
+          },
+        },
+      });
+    }
+  }
+
+  public static async cancelFriendRequest(userId: string, friendId: string) {
+    const userResp = await client.user.findFirst({
+      where: { id: userId },
+      select: {
+        outgoingInvitations: true,
+      },
+    });
+    const friendResp = await client.user.findFirst({
+      where: { id: friendId },
+      select: {
+        incomingInvitations: true,
+      },
+    });
+
+    if (userResp) {
+      const { outgoingInvitations } = userResp;
+      await client.user.update({
+        where: { id: userId },
+        data: {
+          outgoingInvitations: {
+            set: outgoingInvitations.filter((id) => id !== friendId),
+          },
+        },
+      });
+    }
+    if (friendResp) {
+      const { incomingInvitations } = friendResp;
+      await client.user.update({
+        where: { id: friendId },
+        data: {
+          incomingInvitations: {
+            set: incomingInvitations.filter((id) => id !== userId),
+          },
+        },
+      });
+    }
+  }
+
   public static async getUserKittysEnded(id: string) {
     return await client.user.findFirst({
       where: {

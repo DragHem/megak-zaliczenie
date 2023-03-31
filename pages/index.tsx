@@ -30,11 +30,10 @@ export default function Home() {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
-
-  const resp = await KittyService.getKittys("641edd7c87cac162fa64d757");
+  const resp = await UserService.getUserKittysActive(
+    "641edd7c87cac162fa64d757"
+  );
   console.log(resp);
-  const resp2 = await KittyService.getKittys("641b331fce7e74f75835c4b8");
-  console.log(resp2);
   return {
     props: {},
   };

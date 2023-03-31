@@ -100,5 +100,7 @@ model Kitty {
 
   users String[] @db.ObjectId
 
+  isVisible Boolean @default(true)
+
   products Product[]
 }
