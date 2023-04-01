@@ -4,7 +4,6 @@ import { GetServerSideProps } from "next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import client from "../lib/prismadb";
 import { UserService } from "../services/userService";
-import { KittyService } from "../services/kittyService";
 
 export default function Home() {
   const { data } = useSession();
@@ -23,6 +22,7 @@ export default function Home() {
       {/*<img src={data.user.image} alt="" />*/}
       <br />
       <button onClick={() => signOut()}>Sign out</button>
+
       <br />
     </div>
   );
