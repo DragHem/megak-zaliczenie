@@ -1,16 +1,10 @@
 import client from "../lib/prismadb";
-import { KittyService } from "./kittyService";
 
 export abstract class UserService {
-  public static async getUser(email: string, id?: string) {
-    return await client.user.findFirst({
+  public static async getUser(email: string) {
+    return await client.user.findUnique({
       where: {
-        OR: [
-          {
-            email,
-            id,
-          },
-        ],
+        email,
       },
       select: {
         id: true,
@@ -18,7 +12,7 @@ export abstract class UserService {
         email: true,
         image: true,
         nickname: true,
-        kittys: true,
+        // kitties: true,
         friends: true,
         isActive: true,
         isVirtual: true,
@@ -281,7 +275,7 @@ export abstract class UserService {
         id,
       },
       select: {
-        kittys: {
+        kitties: {
           where: { isEnded: true },
           select: {
             products: true,
@@ -306,7 +300,7 @@ export abstract class UserService {
         id,
       },
       select: {
-        kittys: {
+        kitties: {
           where: { isEnded: false },
           select: {
             products: true,
