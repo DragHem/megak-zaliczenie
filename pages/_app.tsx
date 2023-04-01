@@ -1,17 +1,29 @@
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
-import Head from "next/head";
+
+import { createTheme, NextUIProvider } from "@nextui-org/react";
+
+const theme = createTheme({
+  type: "dark", // it could be "light" or "dark"
+  theme: {
+    colors: {
+      primary: "#4ADE7B",
+      secondary: "#F9CB80",
+      error: "#FCC5D8",
+    },
+  },
+});
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
   return (
     <>
-      <Head>
-        <link rel="manifest" href="/manifest.json" />
-      </Head>
       <SessionProvider session={session}>
-        <Component {...pageProps} />
+        <NextUIProvider theme={theme}>
+          <Component {...pageProps} />
+        </NextUIProvider>
       </SessionProvider>
     </>
   );

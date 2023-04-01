@@ -3,8 +3,7 @@ import { getServerSession } from "next-auth";
 import { GetServerSideProps } from "next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import client from "../lib/prismadb";
-import { UserService } from "../services/userService";
-import { KittyService } from "../services/kittyService";
+import { UserService, KittyService } from "services";
 
 export default function Home() {
   const { data } = useSession();

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { UserService } from "../../../services/userService";
+import { UserService } from "services";
 import validator from "validator";
 import { Signup } from "../../../interfaces/signup/signup";
 import { PasswordModule } from "../../../lib/passwordModule";
