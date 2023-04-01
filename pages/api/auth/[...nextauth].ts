@@ -1,17 +1,12 @@
 import NextAuth from "next-auth";
 
-// import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-// import { PrismaAdapter } from "@next-auth/prisma-adapter";
-// import prisma from "../../../lib/prismadb";
-
-import { UserService } from "../../../services/userService";
+import { UserService } from "services";
 import { PasswordModule } from "../../../lib/passwordModule";
 import validator from "validator";
 
 export const authOptions = {
-  // adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       credentials: {
@@ -25,8 +20,6 @@ export const authOptions = {
       name: "Credentials",
       async authorize(credentials) {
         if (!credentials) return null;
-
-        console.log(credentials);
 
         const { email, password } = credentials;
 
@@ -58,15 +51,9 @@ export const authOptions = {
           }
         }
 
-        console.log(user);
-
         return { ...user };
       },
     }),
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID as string,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    // }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
 };

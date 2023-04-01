@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { UserService } from "../../../services/userService";
+import { UserService } from "services";
 import validator from "validator";
 import { Signup } from "../../../interfaces/signup/signup";
 import { PasswordModule } from "../../../lib/passwordModule";
@@ -8,7 +8,11 @@ import uniqueString from "unique-string";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
+    console.log("test");
+
     const { email, password, name, nickname }: Signup = req.body;
+
+    console.log(req.body);
 
     if (!email || !password || !name || !nickname) {
       res
@@ -76,6 +80,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         return;
       }
     } catch (e) {
+      console.log(e);
       res.status(409).json({
         message: "Błąd serwera, prosimy spróbować później.",
         status: "Error",
