@@ -2,7 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import { GetServerSideProps } from "next";
 import { authOptions } from "./api/auth/[...nextauth]";
-import { UserService, KittyService } from "services";
+import { UserService } from "services";
 import _ from "lodash";
 
 type Props = {
@@ -21,6 +21,8 @@ export default function Home({ user }: Props) {
   if (!data) {
     return (
       <div>
+        <button className="btn">Hello daisyUI</button>
+
         <button onClick={() => signIn()}>Sign in</button>
       </div>
     );
@@ -28,7 +30,10 @@ export default function Home({ user }: Props) {
 
   return (
     <div>
-      <h2>Jesteś zalogowany!</h2>
+      <h1 className="text-3xl font-bold underline text-green-200">
+        Hello world!
+      </h1>{" "}
+      <h2 className="text-2xl">Jesteś zalogowany!</h2>
       <h2>{user.email}</h2>
       <br />
       <button onClick={() => signOut()}>Sign out</button>
