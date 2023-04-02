@@ -5,6 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { UserService } from "services";
 import { PasswordModule } from "../../../lib/passwordModule";
 import validator from "validator";
+import { ErrorResponseStatus } from "interfaces/ErrorResponseStatus";
 
 export const authOptions = {
   providers: [
@@ -23,22 +24,32 @@ export const authOptions = {
 
         const { email, password } = credentials;
 
-        if (!email || !password) throw new Error("Podano nieprawidłowe dane.");
+        if (!email || !password)
+          throw {
+            message: "Podano nieprawidłowe dane.",
+            status: ErrorResponseStatus.error,
+          };
 
         if (!validator.isEmail(email))
-          throw new Error("Podany adres e-mail jest niepoprawny.");
+          throw {
+            message: "Podany adres e-mail jest niepoprawny.",
+            status: ErrorResponseStatus.error,
+          };
 
         const user = await UserService.getUser(email);
 
         if (!user || user.isVirtual)
-          throw new Error(
-            "Nie odnaleziono użytkownika o podanym adresie email."
-          );
+          throw {
+            message: "Nie odnaleziono użytkownika o podanym adresie email.",
+            status: ErrorResponseStatus.error,
+          };
 
         if (!user.isActive)
-          throw new Error(
-            "Musisz aktywować konto aby się zalogować, sprawdź maila w celu aktywacji konta."
-          );
+          throw {
+            message:
+              "Musisz aktywować konto aby się zalogować. Sprawdź adress email w celu aktywacji konta.",
+            status: ErrorResponseStatus.warning,
+          };
 
         if (user.password) {
           const isPasswordValid = await PasswordModule.verifyHashedValue(
@@ -46,12 +57,14 @@ export const authOptions = {
             user.password
           );
 
-          if (!isPasswordValid) {
-            throw new Error("Wprowadzone nieprawidłowe hasło.");
-          }
+          if (!isPasswordValid)
+            throw {
+              message: "Wprowadzone nieprawidłowe hasło.",
+              status: ErrorResponseStatus.error,
+            };
         }
 
-        return { ...user };
+        return user;
       },
     }),
   ],

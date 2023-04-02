@@ -5,12 +5,12 @@ import Link from "next/link";
 const RegisterLoginButtons = () => {
   return (
     <>
-      <Button>
-        <Link href="/auth/signin">Zaloguj się</Link>
-      </Button>
-      <Button primary>
-        <Link href="/auth/signup">Zarejestruj się</Link>
-      </Button>
+      <Link href="/auth/signin">
+        <Button>Zaloguj się</Button>
+      </Link>
+      <Link href="/auth/signup">
+        <Button primary>Zarejestruj się</Button>
+      </Link>
     </>
   );
 };

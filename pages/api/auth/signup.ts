@@ -1,10 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { UserService } from "services";
+
 import validator from "validator";
-import { Signup, SignupResponse } from "../../../interfaces/signup/signup";
-import { PasswordModule } from "../../../lib/passwordModule";
-import { MailModule } from "../../../lib/mailModule";
 import uniqueString from "unique-string";
+
+import { UserService } from "services";
+import { Signup, SignupResponse } from "interfaces/signup/signup";
+import { ErrorResponseStatus } from "interfaces/ErrorResponseStatus";
+
+import { PasswordModule } from "lib/passwordModule";
+import { MailModule } from "lib/mailModule";
 
 async function handler(
   req: NextApiRequest,
@@ -14,9 +18,10 @@ async function handler(
     const { email, password, name, nickname }: Signup = req.body;
 
     if (!email || !password || !name || !nickname) {
-      res
-        .status(400)
-        .json({ message: "Należy podać wszystkie dane.", status: "error" });
+      res.status(400).json({
+        message: "Należy podać wszystkie dane.",
+        status: ErrorResponseStatus.error,
+      });
       return;
     }
 
@@ -26,16 +31,17 @@ async function handler(
       validator.isEmpty(name) ||
       validator.isEmpty(nickname)
     ) {
-      res
-        .status(400)
-        .json({ message: "Należy podać wszystkie dane.", status: "error" });
+      res.status(400).json({
+        message: "Należy podać wszystkie dane.",
+        status: ErrorResponseStatus.error,
+      });
       return;
     }
 
     if (!validator.isEmail(email)) {
       res.status(400).json({
         message: "Podany adres e-mail jest niepoprawny.",
-        status: "error",
+        status: ErrorResponseStatus.error,
       });
       return;
     }
@@ -46,7 +52,7 @@ async function handler(
       if (user) {
         res.status(409).json({
           message: "Użytkownik o podanym adresie email już istnieje.",
-          status: "error",
+          status: ErrorResponseStatus.error,
         });
         return;
       }
@@ -74,7 +80,7 @@ async function handler(
       if (newUser && verifyMail) {
         res.status(201).json({
           message: "Rejestracja przebiegła pomyślnie.",
-          status: "success",
+          status: ErrorResponseStatus.success,
         });
         return;
       }
@@ -82,7 +88,7 @@ async function handler(
       console.log(e);
       res.status(409).json({
         message: "Błąd serwera, prosimy spróbować później.",
-        status: "error",
+        status: ErrorResponseStatus.error,
       });
     }
   }

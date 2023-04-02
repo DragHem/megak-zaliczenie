@@ -1,33 +1,28 @@
 import React, { useState } from "react";
-import Input from "components/common/Input";
 
-import {
-  faRightToBracket,
-  faUser,
-  faLock,
-  faAt,
-} from "@fortawesome/free-solid-svg-icons";
-
-import Button from "components/common/Button";
-import Divider from "components/common/Divider";
-
-import { useForm } from "react-hook-form";
+import { faAt, faLock } from "@fortawesome/free-solid-svg-icons";
 import validator from "validator";
-import { SignupResponse } from "../../interfaces/signup/signup";
-import Toast from "components/common/Toast";
+import { useForm } from "react-hook-form";
+import { signIn, SignInResponse } from "next-auth/react";
+
+import Input from "components/common/Input";
+import Divider from "components/common/Divider";
+import Button from "components/common/Button";
+import { useRouter } from "next/router";
+import Toast from "../../components/common/Toast";
+import { ErrorResponseStatus } from "../../interfaces/ErrorResponseStatus";
 import { GetServerSideProps } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 
 type FormValues = {
-  name: string;
-  nickname: string;
   email: string;
   password: string;
 };
 
-const SignUpPage = () => {
-  const [response, setResponse] = useState<SignupResponse | null>();
+const SignInPage = () => {
+  const [response, setResponse] = useState<SignInResponse | null>();
+  const router = useRouter();
 
   const {
     register,
@@ -35,25 +30,24 @@ const SignUpPage = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
-      nickname: "",
       email: "",
       password: "",
     },
   });
 
   const submitHandler = async (formValues: FormValues) => {
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify(formValues),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const response = await signIn("credentials", {
+      redirect: false,
+      ...formValues,
     });
 
-    const data: SignupResponse = await response.json();
-    setResponse(data);
+    console.log(response);
 
+    if (!response?.error) {
+      await router.push("/");
+    }
+
+    setResponse(response);
     setTimeout(() => setResponse(null), 1500);
   };
 
@@ -63,21 +57,8 @@ const SignUpPage = () => {
         className="form-control grid mt-20 place-items-center"
         onSubmit={handleSubmit((data) => submitHandler(data))}
       >
-        <h2 className="text-3xl">Rejestracja</h2>
-        <Input
-          icon={faRightToBracket}
-          placeholder="Marcin"
-          label="Imię"
-          register={register("name", { required: "To pole jest wymagane" })}
-          errorMessage={errors.name?.message}
-        />
-        <Input
-          icon={faUser}
-          placeholder="AlaOla"
-          label="Nazwa użytkownika"
-          register={register("nickname", { required: "To pole jest wymagane" })}
-          errorMessage={errors.nickname?.message}
-        />
+        <h2 className="text-3xl">Logowanie</h2>
+
         <Input
           icon={faAt}
           placeholder="example@email.com"
@@ -99,16 +80,16 @@ const SignUpPage = () => {
           errorMessage={errors.password?.message}
         />
         <Divider />
-        <Button primary>Zarejestruj</Button>
+        <Button primary>Zaloguj się</Button>
       </form>
       {response && (
-        <Toast message={response.message} status={response.status} />
+        <Toast message={response.error} status={ErrorResponseStatus.error} />
       )}
     </>
   );
 };
 
-export default SignUpPage;
+export default SignInPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
