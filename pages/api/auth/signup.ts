@@ -1,23 +1,22 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { UserService } from "services";
 import validator from "validator";
-import { Signup } from "../../../interfaces/signup/signup";
+import { Signup, SignupResponse } from "../../../interfaces/signup/signup";
 import { PasswordModule } from "../../../lib/passwordModule";
 import { MailModule } from "../../../lib/mailModule";
 import uniqueString from "unique-string";
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<SignupResponse>
+) {
   if (req.method === "POST") {
-    console.log("test");
-
     const { email, password, name, nickname }: Signup = req.body;
-
-    console.log(req.body);
 
     if (!email || !password || !name || !nickname) {
       res
         .status(400)
-        .json({ message: "Należy podać wszystkie dane.", status: "Error" });
+        .json({ message: "Należy podać wszystkie dane.", status: "error" });
       return;
     }
 
@@ -29,14 +28,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     ) {
       res
         .status(400)
-        .json({ message: "Należy podać wszystkie dane.", status: "Error" });
+        .json({ message: "Należy podać wszystkie dane.", status: "error" });
       return;
     }
 
     if (!validator.isEmail(email)) {
       res.status(400).json({
         message: "Podany adres e-mail jest niepoprawny.",
-        status: "Error",
+        status: "error",
       });
       return;
     }
@@ -47,7 +46,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       if (user) {
         res.status(409).json({
           message: "Użytkownik o podanym adresie email już istnieje.",
-          status: "Error",
+          status: "error",
         });
         return;
       }
@@ -75,7 +74,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       if (newUser && verifyMail) {
         res.status(201).json({
           message: "Rejestracja przebiegła pomyślnie.",
-          status: "Success",
+          status: "success",
         });
         return;
       }
@@ -83,7 +82,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       console.log(e);
       res.status(409).json({
         message: "Błąd serwera, prosimy spróbować później.",
-        status: "Error",
+        status: "error",
       });
     }
   }

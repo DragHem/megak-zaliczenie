@@ -4,3 +4,13 @@ export interface Signup {
   password: string;
   nickname: string;
 }
+
+export interface SignupResponse {
+  message: string;
+  status: SignupResponseStatus;
+}
+
+export enum SignupResponseStatus {
+  error = "error",
+  success = "success",
+}
