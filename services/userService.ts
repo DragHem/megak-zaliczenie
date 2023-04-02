@@ -269,7 +269,7 @@ export abstract class UserService {
     }
   }
 
-  public static async getUserKittysEnded(id: string) {
+  public static async getUserKittiesEnded(id: string) {
     return await client.user.findFirst({
       where: {
         id,
@@ -294,7 +294,7 @@ export abstract class UserService {
     });
   }
 
-  public static async getUserKittysActive(id: string) {
+  public static async getUserKittiesActive(id: string) {
     return await client.user.findFirst({
       where: {
         id,
