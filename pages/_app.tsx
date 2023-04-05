@@ -9,7 +9,9 @@ config.autoAddCss = false;
 
 import "../styles/globals.css";
 
-import Nav from "../components/Nav";
+import Nav from "components/Nav";
+import { PopupProvider } from "components/providers/PopupProvider";
+import Popup from "../components/common/Popup";
 
 export default function App({
   Component,
@@ -22,7 +24,10 @@ export default function App({
       </Head>
       <SessionProvider session={session}>
         <Nav />
-        <Component {...pageProps} />
+        <PopupProvider>
+          <Component {...pageProps} />
+          <Popup />
+        </PopupProvider>
       </SessionProvider>
     </>
   );
