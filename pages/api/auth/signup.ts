@@ -69,11 +69,10 @@ async function handler(
         activationLink
       );
 
-      //@todo Trzeba dodać link jak zrobimy już stronę do aktywacji.
       const verifyMail = await MailModule.sendMail(
         email,
         "Kitty Project - Rejestracja",
-        `Tutaj będzie link - ${activationLink}`,
+        `http://localhost:3000/auth/activate/${activationLink}`,
         "Kitty Project - Rejestracja"
       );
 

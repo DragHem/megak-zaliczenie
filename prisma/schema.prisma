@@ -14,18 +14,18 @@ generator client {
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
-  email         String   @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
 
   password       String
   nickname       String?
-  isVirtual      Boolean @default(false)
+  isVirtual      Boolean  @default(false)
   createdAt      DateTime @default(now())
   isActive       Boolean  @default(false)
   changePassword String?
-  activationLink String?
-  kitties         Kitty[]
+  activationLink String?  @unique
+  kitties        Kitty[]
 
   ProductIDs          String[]  @db.ObjectId
   products            Product[] @relation(fields: [ProductIDs], references: [id])

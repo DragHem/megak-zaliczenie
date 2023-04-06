@@ -1,4 +1,5 @@
 import client from "../lib/prismadb";
+import { ErrorResponseStatus } from "../interfaces/ErrorResponseStatus";
 
 export abstract class UserService {
   public static async getUser(email: string) {
@@ -317,5 +318,45 @@ export abstract class UserService {
         },
       },
     });
+  }
+
+  public static async activateUser(activationLink: string) {
+    const user = await client.user.findUnique({
+      where: {
+        activationLink,
+      },
+    });
+
+    if (!user)
+      return {
+        message: "Użytkownik nie został odnaleziony odnaleziony.",
+        status: ErrorResponseStatus.error,
+      };
+
+    if (user && user.isActive)
+      return {
+        message: "Konto zostało już aktywowane.",
+        status: ErrorResponseStatus.warning,
+      };
+
+    const updatedUser = await client.user.update({
+      where: {
+        email: user.email,
+      },
+      data: {
+        isActive: true,
+      },
+    });
+
+    if (!updatedUser)
+      return {
+        message: "Aktywacja konta nie powiodła się, prosimy spróbować później.",
+        status: ErrorResponseStatus.error,
+      };
+
+    return {
+      message: "Użytkownik aktywowany pomyślnie.",
+      status: ErrorResponseStatus.success,
+    };
   }
 }

@@ -7,7 +7,7 @@ const Popup = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       clearPopup();
-    }, 1500);
+    }, 1800);
     return () => clearTimeout(timer);
   }, [message]);
 
