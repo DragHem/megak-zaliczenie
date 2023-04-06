@@ -1,6 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { UserService } from "services";
-import _ from "lodash";
 
 interface Req extends NextApiRequest {
   query: {
