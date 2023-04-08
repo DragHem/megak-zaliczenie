@@ -1,12 +1,9 @@
-import { Dispatch, SetStateAction, useState } from "react";
 import { kittyList } from "../../interfaces/kitty";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 interface Props {
-  // active: boolean;
   kitty: kittyList;
-  // setKitty: Dispatch<SetStateAction<kittyList>>;
 }
 
 export const KittyCard = ({ kitty }: Props) => {
@@ -15,10 +12,6 @@ export const KittyCard = ({ kitty }: Props) => {
   return (
     <Link href={kitty.id} scroll={false}>
       <div
-        // onClick={() => setKitty({ ...kitty })}
-        //${
-        //           active ? "bg-warning" : "bg-yellow-600"
-        //         }
         className={`card mb-3 mt-3 w-full text-primary-content ${
           query.id === undefined
             ? "bg-yellow-600"

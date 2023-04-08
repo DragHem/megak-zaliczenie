@@ -34,11 +34,6 @@ export const Chart = ({
     },
     toolbox: {
       show: true,
-      feature: {
-        mark: { show: true },
-        restore: { show: true },
-        saveAsImage: { show: true },
-      },
     },
     responsive: true,
     maintainAspectRatio: false,

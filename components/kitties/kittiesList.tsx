@@ -1,11 +1,8 @@
 import { KittyCard } from "./KittyCard";
-import { Dispatch, SetStateAction } from "react";
 import { kittyList } from "../../interfaces/kitty";
 
 interface Props {
-  // id: string;
   kitties: kittyList[];
-  // setKitty: Dispatch<SetStateAction<kittyList>>;
 }
 
 export const KittiesList = ({ kitties }: Props) => {
