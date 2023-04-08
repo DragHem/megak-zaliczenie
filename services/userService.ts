@@ -13,7 +13,6 @@ export abstract class UserService {
         email: true,
         image: true,
         nickname: true,
-        // kitties: true,
         friends: true,
         isActive: true,
         isVirtual: true,
@@ -270,48 +269,52 @@ export abstract class UserService {
     }
   }
 
-  public static async getUserKittiesEnded(id: string) {
+  public static async getUserKitties(id: string, isEnded: boolean) {
     return await client.user.findFirst({
-      where: {
-        id,
-      },
+      where: { id },
       select: {
         kitties: {
-          where: { isEnded: true },
+          where: { isEnded },
           select: {
-            products: true,
             id: true,
-            userId: true,
             name: true,
             createdAt: true,
             description: true,
             totalValue: true,
-            isEnded: true,
-            receiptsPhotos: true,
-            users: true,
           },
         },
       },
     });
   }
 
-  public static async getUserKittiesActive(id: string) {
+  public static async getUserKittiesDetails(id: string, isEnded: boolean) {
     return await client.user.findFirst({
       where: {
         id,
       },
       select: {
         kitties: {
-          where: { isEnded: false },
+          where: { isEnded },
           select: {
-            products: true,
+            products: {
+              select: {
+                name: true,
+                price: true,
+                users: {
+                  select: {
+                    id: true,
+                    name: true,
+                    nickname: true,
+                  },
+                },
+              },
+            },
             id: true,
             userId: true,
             name: true,
             createdAt: true,
             description: true,
             totalValue: true,
-            isEnded: true,
             receiptsPhotos: true,
             users: true,
           },
