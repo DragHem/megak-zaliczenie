@@ -1,23 +1,27 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { UserService } from "services";
+
 import validator from "validator";
-import { Signup } from "../../../interfaces/signup/signup";
-import { PasswordModule } from "../../../lib/passwordModule";
-import { MailModule } from "../../../lib/mailModule";
 import uniqueString from "unique-string";
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "POST") {
-    console.log("test");
+import { UserService } from "services";
+import { Signup, SignupResponse } from "interfaces/signup/signup";
+import { ErrorResponseStatus } from "interfaces/ErrorResponseStatus";
 
+import { PasswordModule } from "lib/passwordModule";
+import { MailModule } from "lib/mailModule";
+
+async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<SignupResponse>
+) {
+  if (req.method === "POST") {
     const { email, password, name, nickname }: Signup = req.body;
 
-    console.log(req.body);
-
     if (!email || !password || !name || !nickname) {
-      res
-        .status(400)
-        .json({ message: "Należy podać wszystkie dane.", status: "Error" });
+      res.status(400).json({
+        message: "Należy podać wszystkie dane.",
+        status: ErrorResponseStatus.error,
+      });
       return;
     }
 
@@ -27,16 +31,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       validator.isEmpty(name) ||
       validator.isEmpty(nickname)
     ) {
-      res
-        .status(400)
-        .json({ message: "Należy podać wszystkie dane.", status: "Error" });
+      res.status(400).json({
+        message: "Należy podać wszystkie dane.",
+        status: ErrorResponseStatus.error,
+      });
       return;
     }
 
     if (!validator.isEmail(email)) {
       res.status(400).json({
         message: "Podany adres e-mail jest niepoprawny.",
-        status: "Error",
+        status: ErrorResponseStatus.error,
       });
       return;
     }
@@ -47,7 +52,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       if (user) {
         res.status(409).json({
           message: "Użytkownik o podanym adresie email już istnieje.",
-          status: "Error",
+          status: ErrorResponseStatus.error,
         });
         return;
       }
@@ -64,18 +69,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         activationLink
       );
 
-      //@todo Trzeba dodać link jak zrobimy już stronę do aktywacji.
       const verifyMail = await MailModule.sendMail(
         email,
         "Kitty Project - Rejestracja",
-        `Tutaj będzie link - ${activationLink}`,
+        `http://localhost:3000/auth/activate/${activationLink}`,
         "Kitty Project - Rejestracja"
       );
 
       if (newUser && verifyMail) {
         res.status(201).json({
           message: "Rejestracja przebiegła pomyślnie.",
-          status: "Success",
+          status: ErrorResponseStatus.success,
         });
         return;
       }
@@ -83,7 +87,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       console.log(e);
       res.status(409).json({
         message: "Błąd serwera, prosimy spróbować później.",
-        status: "Error",
+        status: ErrorResponseStatus.error,
       });
     }
   }
