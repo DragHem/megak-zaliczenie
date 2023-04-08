@@ -15,12 +15,12 @@ type Props = {
 
 export default function kitties({ kitties }: Props) {
   return (
-    <div>
-      <div className="p-3 flex-grow w-1/4 card bg-base-300 rounded-box">
+    <div className={"flex overflow-hidden h-7/8"}>
+      <div className="p-3 flex-grow w-1/4 h-1/1 card bg-base-300 rounded-box">
         <KittiesList kitties={kitties} />
       </div>
 
-      <div className="fixed ml-3 w-3/4 top-0 h-screen left-1/4 bg-base-300 rounded-box">
+      <div className="ml-3 w-3/4 overflow-auto  p-3 left-1/4 bg-base-300 rounded-box">
         <KittyDetails />
       </div>
     </div>
