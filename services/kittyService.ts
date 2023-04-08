@@ -1,7 +1,62 @@
 import client from "../lib/prismadb";
 import { Product } from "../interfaces/product/product";
+import { UserService } from "./userService";
 
 export abstract class KittyService {
+  public static async getKitty(id: string) {
+    const kitty = await client.kitty.findFirst({
+      where: { id },
+      select: {
+        name: true,
+        createdAt: true,
+        description: true,
+        totalValue: true,
+        users: true,
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            nickname: true,
+          },
+        },
+        products: {
+          select: {
+            name: true,
+            price: true,
+            users: {
+              select: {
+                name: true,
+                nickname: true,
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (kitty) {
+      const users = await UserService.getUserFriends(kitty.users);
+
+      const values = kitty.users.map((user) =>
+        kitty.products.reduce(
+          (acc, curr) =>
+            curr.users.find((ProductUser) => ProductUser.id == user)
+              ? Math.ceil((curr.price / curr.users.length) * 100) / 100 + acc
+              : acc + 0,
+          0
+        )
+      );
+      const data = [];
+      for (let i = 0; i < users.length; i++) {
+        data.push({
+          value: values[i],
+          name: users[i].nickname ? users[i].nickname : users[i].name,
+        });
+      }
+      return { ...kitty, users: users, data };
+    }
+  }
+
   public static async createKitty(
     userId: string,
     name: string,

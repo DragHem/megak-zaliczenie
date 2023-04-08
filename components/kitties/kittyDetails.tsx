@@ -1,38 +1,35 @@
-import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { useRouter } from "next/router";
 import { Chart } from "./chart";
-import { kitty } from "../../interfaces/kitty";
-import { UserService } from "../../services";
 
-interface Props {
-  kitty: kitty;
-}
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export const KittyDetails = ({ kitty }: Props) => {
-  const [data, setData] = useState<{ name: string; value: number }[]>([]);
-  const [kittyData, setKitty] = useState<kitty>();
+export const KittyDetails = () => {
+  const { query } = useRouter();
 
-  useEffect(() => {
-    console.log(kitty);
-    (async () => {
-      const resp = await fetch("http://localhost:3000/api/user/getUsers", {
-        method: "POST",
-        body: JSON.stringify({ users: kitty.users }),
-      });
-      const users = await resp.json();
-      const dataInit = [];
-      for (let i = 0; i < kitty.users.length; i++) {
-        dataInit.push({
-          name: users[i].nickname ? users[i].nickname : users[i].name,
-          value: kitty.userValues[i],
-        });
-      }
-      setData(dataInit);
-    })();
-  }, [kitty]);
+  const { data, error, isLoading } = useSWR(
+    `/api/kitty/${query.id![0]}`,
+    fetcher
+  );
+  console.log(data);
+  console.log(query);
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+  if (!data) return null;
 
+  const dane = data.products.map((product) => (
+    <div>
+      {product.name} {product.price}{" "}
+      {product.users.map((user) => (
+        <p>{user.name}</p>
+      ))}
+    </div>
+  ));
   return (
-    <div className={"p-3"}>
-      <Chart data={data} />
+    <div>
+      <Chart data={data.data} />
+      {dane}
       <p>jakieś dane się pomyśli</p>
     </div>
   );
