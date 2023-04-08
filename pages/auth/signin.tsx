@@ -5,13 +5,14 @@ import { getServerSession } from "next-auth";
 import { useRouter } from "next/router";
 
 import { faAt, faLock } from "@fortawesome/free-solid-svg-icons";
-import validator from "validator";
+import isEmail from "validator/lib/isEmail";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 
-import Input from "components/common/Input";
-import Divider from "components/common/Divider";
-import Button from "components/common/Button";
+const Input = React.lazy(() => import("components/common/Input"));
+const Divider = React.lazy(() => import("components/common/Divider"));
+const Button = React.lazy(() => import("components/common/Button"));
+
 import { usePopup } from "components/providers/PopupProvider";
 import { authOptions } from "../api/auth/[...nextauth]";
 
@@ -64,8 +65,7 @@ const SignInPage = () => {
         label="Email"
         register={register("email", {
           required: "To pole jest wymagane",
-          validate: (value) =>
-            validator.isEmail(value) || "Podaj prawidłowy adres email",
+          validate: (value) => isEmail(value) || "Podaj prawidłowy adres email",
         })}
         errorMessage={errors.email?.message}
       />

@@ -5,6 +5,14 @@ interface Props {
   kitties: kittyList[];
 }
 
-export const KittiesList = ({ kitties }: Props) => {
-  return kitties.map((kitty) => <KittyCard kitty={kitty} />);
+const KittiesList = ({ kitties }: Props) => {
+  return (
+    <>
+      {kitties.map((kitty) => (
+        <KittyCard kitty={kitty} />
+      ))}
+    </>
+  );
 };
+
+export default KittiesList;

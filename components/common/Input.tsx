@@ -22,27 +22,25 @@ const Input = ({
   errorMessage,
 }: Props) => {
   return (
-    <>
-      <div>
-        <label className="label">
-          <span className="label-text">{label}</span>
-        </label>
-        <label className="input-group">
-          <span>
-            <FontAwesomeIcon icon={icon} className="text-primary" />
-          </span>
-          <input
-            type={"text" && type}
-            placeholder={placeholder}
-            className="input input-bordered placeholder:opacity-50"
-            {...register}
-          />
-        </label>
-        <div className="flex justify-center m-2">
-          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        </div>
+    <div>
+      <label className="label">
+        <span className="label-text">{label}</span>
+      </label>
+      <label className="input-group">
+        <span>
+          <FontAwesomeIcon icon={icon} className="text-primary" />
+        </span>
+        <input
+          type={"text" && type}
+          placeholder={placeholder}
+          className="input input-bordered placeholder:opacity-50"
+          {...register}
+        />
+      </label>
+      <div className="flex justify-center m-2">
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </div>
-    </>
+    </div>
   );
 };
 

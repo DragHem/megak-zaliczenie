@@ -18,7 +18,7 @@ const UserCard = ({ user }: Props) => {
   const avatar = image || "/avatar-placeholder.webp";
 
   return (
-    <div className="card bg-base-200 shadow-xl max-w-md">
+    <div className="card card-compact bg-base-300 shadow-xl w-full md:w-1/3">
       <figure className="px-10 pt-10">
         <img
           src={avatar}

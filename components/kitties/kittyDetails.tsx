@@ -4,7 +4,7 @@ import { Chart } from "./chart";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export const KittyDetails = () => {
+const KittyDetails = () => {
   const { query } = useRouter();
   console.log(query);
 
@@ -19,12 +19,19 @@ export const KittyDetails = () => {
     }
     if (!data) return null;
 
+    // @ts-ignore
+
     const productData = data.products.map((product) => (
       <div>
         {product.name} {product.price}{" "}
-        {product.users.map((user) => (
-          <p>{user.name}</p>
-        ))}
+        {product.users.map(
+          (
+            // @ts-ignore
+            user
+          ) => (
+            <p>{user.name}</p>
+          )
+        )}
       </div>
     ));
 
@@ -39,3 +46,5 @@ export const KittyDetails = () => {
 
   return <h2>Wybierz zrzutkę do przeglądania</h2>;
 };
+
+export default KittyDetails;
