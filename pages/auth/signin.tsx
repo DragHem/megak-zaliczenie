@@ -53,10 +53,10 @@ const SignInPage = () => {
 
   return (
     <form
-      className="form-control grid mt-20 place-items-center"
+      className="form-control grid place-items-center"
       onSubmit={handleSubmit((data) => submitHandler(data))}
     >
-      <h2 className="text-3xl">Logowanie</h2>
+      <h2 className="text-3xl my-16">Logowanie</h2>
 
       <Input
         icon={faAt}

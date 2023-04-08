@@ -49,52 +49,50 @@ const SignUpPage = () => {
   }, [resp.message, resp.status]);
 
   return (
-    <>
-      <form
-        className="form-control grid mt-20 place-items-center"
-        onSubmit={handleSubmit((formValues) => formHandler(formValues))}
-      >
-        <h2 className="text-3xl">Rejestracja</h2>
-        <Input
-          icon={faRightToBracket}
-          placeholder="Marcin"
-          label="Imię"
-          register={register("name", { required: "To pole jest wymagane" })}
-          errorMessage={errors.name?.message}
-        />
-        <Input
-          icon={faUser}
-          placeholder="AlaOla"
-          label="Nazwa użytkownika"
-          register={register("nickname", { required: "To pole jest wymagane" })}
-          errorMessage={errors.nickname?.message}
-        />
-        <Input
-          icon={faAt}
-          placeholder="example@email.com"
-          label="Email"
-          register={register("email", {
-            required: "To pole jest wymagane",
-            validate: (value) =>
-              validator.isEmail(value) || "Podaj prawidłowy adres email",
-          })}
-          errorMessage={errors.email?.message}
-        />
+    <form
+      className="form-control grid place-items-center"
+      onSubmit={handleSubmit((formValues) => formHandler(formValues))}
+    >
+      <h2 className="text-3xl my-16">Rejestracja</h2>
+      <Input
+        icon={faRightToBracket}
+        placeholder="Marcin"
+        label="Imię"
+        register={register("name", { required: "To pole jest wymagane" })}
+        errorMessage={errors.name?.message}
+      />
+      <Input
+        icon={faUser}
+        placeholder="AlaOla"
+        label="Nazwa użytkownika"
+        register={register("nickname", { required: "To pole jest wymagane" })}
+        errorMessage={errors.nickname?.message}
+      />
+      <Input
+        icon={faAt}
+        placeholder="example@email.com"
+        label="Email"
+        register={register("email", {
+          required: "To pole jest wymagane",
+          validate: (value) =>
+            validator.isEmail(value) || "Podaj prawidłowy adres email",
+        })}
+        errorMessage={errors.email?.message}
+      />
 
-        <Input
-          icon={faLock}
-          placeholder="Twoje hasło..."
-          label="Hasło"
-          type="password"
-          register={register("password", { required: "To pole jest wymagane" })}
-          errorMessage={errors.password?.message}
-        />
-        <Divider />
-        <Button primary disabled={resp.isLoading}>
-          Zarejestruj
-        </Button>
-      </form>
-    </>
+      <Input
+        icon={faLock}
+        placeholder="Twoje hasło..."
+        label="Hasło"
+        type="password"
+        register={register("password", { required: "To pole jest wymagane" })}
+        errorMessage={errors.password?.message}
+      />
+      <Divider />
+      <Button primary disabled={resp.isLoading}>
+        Zarejestruj
+      </Button>
+    </form>
   );
 };
 

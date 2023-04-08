@@ -8,7 +8,11 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("daisyui"),
+    require("tailwind-scrollbar-hide"),
+  ],
   daisyui: {
     styled: true,
     themes: ["halloween"],

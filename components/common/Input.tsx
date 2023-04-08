@@ -29,7 +29,7 @@ const Input = ({
         </label>
         <label className="input-group">
           <span>
-            <FontAwesomeIcon icon={icon} />
+            <FontAwesomeIcon icon={icon} className="text-primary" />
           </span>
           <input
             type={"text" && type}

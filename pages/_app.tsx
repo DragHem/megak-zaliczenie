@@ -9,9 +9,9 @@ config.autoAddCss = false;
 
 import "../styles/globals.css";
 
-import Nav from "components/Nav";
 import { PopupProvider } from "components/providers/PopupProvider";
 import Popup from "../components/common/Popup";
+import Layout from "../components/Layout/Layout";
 
 export default function App({
   Component,
@@ -22,18 +22,15 @@ export default function App({
       <Head>
         <link rel="manifest" href="/manifest.json" />
         <title>Kitty Project</title>
-        {/*<meta*/}
-        {/*  name="viewport"*/}
-        {/*  content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"*/}
-        {/*/>*/}
         <meta name="theme-color" content="#000000" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </Head>
       <SessionProvider session={session}>
-        <Nav />
         <PopupProvider>
-          <Component {...pageProps} />
-          <Popup />
+          <Layout>
+            <Component {...pageProps} />
+            <Popup />
+          </Layout>
         </PopupProvider>
       </SessionProvider>
     </>
