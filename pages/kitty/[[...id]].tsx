@@ -1,15 +1,15 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 
-import { KittiesList } from "../components/kitties/kittiesList";
+import { KittiesList } from "../../components/kitties/kittiesList";
 import { useState } from "react";
-import { KittyDetails } from "../components/kitties/kittyDetails";
+import { KittyDetails } from "../../components/kitties/kittyDetails";
 import { GetServerSideProps } from "next";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { KittyService, UserService } from "../services";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { KittyService, UserService } from "../../services";
 import _ from "lodash";
 import { DateTime } from "next-auth/providers/kakao";
-import { kitty, kittyList } from "../interfaces/kitty";
+import { kitty, kittyList } from "../../interfaces/kitty";
 
 type Props = {
   kitties: kitty[];
@@ -17,21 +17,21 @@ type Props = {
 
 export default function kitties({ kitties }: Props) {
   const { data } = useSession();
-  const [kittyDetails, setKitty] = useState<kittyList>({
-    id: "",
-    name: "",
-    createdAt: "",
-    description: "",
-    totalValue: 0,
-  });
+  // const [kittyDetails, setKitty] = useState<kittyList>({
+  //   id: "",
+  //   name: "",
+  //   createdAt: "",
+  //   description: "",
+  //   totalValue: 0,
+  // });
 
   return (
     <div>
       <div className="p-3 flex-grow w-1/4 card bg-base-300 rounded-box">
         <KittiesList
-          setKitty={setKitty}
+          // setKitty={setKitty}
           kitties={kitties}
-          id={kittyDetails.id}
+          // id={kittyDetails.id}
         />
       </div>
       <div className="fixed ml-3 w-3/4 top-0 h-screen left-1/4 bg-base-300 rounded-box">
