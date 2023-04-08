@@ -29,8 +29,8 @@ export default function App({
         <PopupProvider>
           <Layout>
             <Component {...pageProps} />
-            <Popup />
           </Layout>
+          <Popup />
         </PopupProvider>
       </SessionProvider>
     </>

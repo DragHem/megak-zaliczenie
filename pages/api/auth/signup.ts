@@ -76,6 +76,8 @@ async function handler(
         "Kitty Project - Rejestracja"
       );
 
+      console.log(verifyMail);
+
       if (newUser && verifyMail) {
         res.status(201).json({
           message: "Rejestracja przebiegła pomyślnie.",

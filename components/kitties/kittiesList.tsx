@@ -6,6 +6,5 @@ interface Props {
 }
 
 export const KittiesList = ({ kitties }: Props) => {
-  const kittiesList = kitties.map((kitty) => <KittyCard kitty={kitty} />);
-  return <div>{kittiesList}</div>;
+  return kitties.map((kitty) => <KittyCard kitty={kitty} />);
 };

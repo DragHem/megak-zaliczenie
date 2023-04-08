@@ -12,7 +12,7 @@ export const KittyCard = ({ kitty }: Props) => {
   return (
     <Link href={kitty.id} scroll={false}>
       <div
-        className={`card mb-3 mt-3 w-full text-primary-content ${
+        className={`card w-full text-primary-content ${
           query.id === undefined
             ? "bg-yellow-600"
             : query.id[0] === kitty.id

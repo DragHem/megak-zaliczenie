@@ -23,8 +23,10 @@ const Nav = () => {
           Kitty
         </Link>
       </div>
-      {!data && <NavMenu />}
-      {data && <Avatar />}
+      <div className="px-2 mx-2">
+        {!data && <NavMenu />}
+        {data && <Avatar />}
+      </div>
     </div>
   );
 };

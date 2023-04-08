@@ -13,7 +13,7 @@ const Layout = ({ children }: Props) => {
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col">
         <Nav />
-        <main className="p-4 overflow-auto">{children}</main>
+        <main className="p-4 overflow-auto grow">{children}</main>
       </div>
       <LayoutDrawer />
     </div>
