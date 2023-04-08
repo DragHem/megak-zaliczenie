@@ -4,6 +4,7 @@ import { GetServerSideProps } from "next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { UserService } from "services";
 import _ from "lodash";
+import { KittyCard } from "../components/kitties/KittyCard";
 
 type Props = {
   user: {
@@ -22,7 +23,6 @@ export default function Home({ user }: Props) {
     return (
       <div>
         <button className="btn">Hello daisyUI</button>
-
         <button onClick={() => signIn()}>Sign in</button>
       </div>
     );

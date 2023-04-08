@@ -9,6 +9,8 @@
     "bcrypt": "^5.1.0",
     "cloudinary": "^1.35.0",
     "daisyui": "^2.51.5",
+    "echarts": "^5.4.2",
+    "echarts-for-react": "^3.0.2",
     "formidable": "^2.1.1",
     "lodash": "^4.17.21",
     "next": "latest",
