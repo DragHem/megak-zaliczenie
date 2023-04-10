@@ -1,0 +1,106 @@
+import React, {useEffect, useReducer, useState} from "react";
+
+
+import Button from "components/common/Button";
+
+import { CreateKittyFirstStep } from "./createKittySteps/createKittyFirstStep";
+import { CreateKittySecondStep } from "./createKittySteps/createKittySecondStep";
+import {Product} from "../../interfaces/product/product";
+import {CreateKittyThirdStep} from "./createKittySteps/createKittyThirdStep";
+
+interface State{
+  data: {
+    userId: string;
+    name: string,
+    description: string,
+    totalValue: number,
+    product: Product[],
+    users: {id:string,name:string,nickname:string}[]
+  }
+}
+
+interface Action{
+  type:string,
+  payload:string|number|Product[]|{id:string,name:string,nickname:string}[]
+}
+
+
+function setData(state:State,action:Action):State{
+    const {type,payload}=action;
+    switch(type) {
+        case "name"||"description":
+        state.data = {...state.data, [type as string]: payload}
+            break;
+        case "userAdd":
+            const copy=payload as {id:string,name:string,nickname:string}[];
+            state.data.users=copy;
+            break;
+        case "userDelete":
+            const userCopy=payload as {id:string,name:string,nickname:string}[]
+            state.data.users=userCopy;
+            break;
+        case "productAdd":
+            const productCopy=state.data.product;
+            productCopy.push(payload as Product[])
+            break;
+        case "productDelete":
+            break;
+    }
+    return state;
+}
+
+export const CreateKitty = () => {
+  const [step, setStep] = useState<number>(1);
+  const [state, dispatch] = useReducer(setData,{data:  {userId: "",
+        name: "",
+        description: "",
+        totalValue: 0,
+        product:[],
+        users: []}})
+    console.log(state)
+  return (
+    <div className="grid place-items-center mt-10">
+      <ul className="steps">
+        <li
+          onClick={() => setStep(1)}
+          className={`step ${step > 0 ? "step-warning" : ""}`}
+        >
+          Wybierz nazwę i opis
+        </li>
+        <li
+          onClick={() => setStep(2)}
+          className={`step ${step > 1 ? "step-warning" : ""}`}
+        >
+          Dodaj znajomych
+        </li>
+        <li
+          onClick={() => setStep(3)}
+          className={`step ${step > 2 ? "step-warning" : ""}`}
+        >
+          Dodaj Produkty
+        </li>
+        <li
+          onClick={() => setStep(4)}
+          className={`step ${step > 3 ? "step-warning" : ""}`}
+        >
+          Zobacz podsumowanie
+        </li>
+      </ul>
+      {step == 1 && <CreateKittyFirstStep dispatch={dispatch} />}
+      {step == 2 && <CreateKittySecondStep dispatch={dispatch}/>}
+        {step == 3 && <CreateKittyThirdStep state={state} dispatch={dispatch}/>}
+      <div className={"flex"}>
+        {step > 1 && (
+          <Button primary onClick={() => setStep((prevState) => prevState - 1)}>
+            Wstecz
+          </Button>
+        )}
+        {step < 4 && (
+          <Button primary onClick={() => setStep((prevState) => prevState + 1)}>
+            Dalej
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+};

@@ -3,9 +3,11 @@ import { KittyService } from "../../../services";
 
 const getKitty = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(req.query);
-  const kitty = await KittyService.getKitty(req.query.id);
-  console.log(kitty);
-  res.json(kitty);
+  if (req.query.id && typeof req.query.id == "string") {
+    const kitty = await KittyService.getKitty(req.query.id);
+    console.log(kitty);
+    res.json(kitty);
+  }
 };
 
 export default getKitty;

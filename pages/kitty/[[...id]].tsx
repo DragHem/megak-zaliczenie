@@ -8,6 +8,8 @@ import { GetServerSideProps } from "next";
 import { UserService } from "../../services";
 
 import { kitty } from "../../interfaces/kitty";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 type Props = {
   kitties: kitty[];
@@ -28,6 +30,8 @@ export default function kitties({ kitties }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
   const RespKitties = await UserService.getUserKitties(
     "641edd7c87cac162fa64d757",
     false

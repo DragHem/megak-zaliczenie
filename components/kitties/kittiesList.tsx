@@ -1,10 +1,18 @@
 import { KittyCard } from "./KittyCard";
 import { kittyList } from "../../interfaces/kitty";
+import { CreateKittyCard } from "./createKittyCard";
 
 interface Props {
   kitties: kittyList[];
 }
 
 export const KittiesList = ({ kitties }: Props) => {
-  return kitties.map((kitty) => <KittyCard kitty={kitty} />);
+  return (
+    <div>
+      <CreateKittyCard />
+      {kitties.map((kitty) => (
+        <KittyCard key={kitty.id} kitty={kitty} />
+      ))}
+    </div>
+  );
 };
