@@ -31,17 +31,13 @@ function setData(state:State,action:Action):State{
         case "name"||"description":
         state.data = {...state.data, [type as string]: payload}
             break;
-        case "userAdd":
+        case "user":
             const copy=payload as {id:string,name:string,nickname:string}[];
             state.data.users=copy;
             break;
-        case "userDelete":
-            const userCopy=payload as {id:string,name:string,nickname:string}[]
-            state.data.users=userCopy;
-            break;
         case "productAdd":
-            const productCopy=state.data.product;
-            productCopy.push(payload as Product[])
+            const productCopy=payload as Product[];
+            state.data.product=productCopy;
             break;
         case "productDelete":
             break;
@@ -87,7 +83,7 @@ export const CreateKitty = () => {
         </li>
       </ul>
       {step == 1 && <CreateKittyFirstStep dispatch={dispatch} />}
-      {step == 2 && <CreateKittySecondStep dispatch={dispatch}/>}
+      {step == 2 && <CreateKittySecondStep state={state} dispatch={dispatch}/>}
         {step == 3 && <CreateKittyThirdStep state={state} dispatch={dispatch}/>}
       <div className={"flex"}>
         {step > 1 && (

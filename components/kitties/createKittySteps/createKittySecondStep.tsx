@@ -3,20 +3,30 @@ import Button from "../../common/Button";
 import {Product} from "../../../interfaces/product/product";
 import Divider from "../../common/Divider";
 
-
+interface State{
+    data: {
+        userId: string;
+        name: string,
+        description: string,
+        totalValue: number,
+        product: Product[],
+        users: {id:string,name:string,nickname:string}[]
+    }
+}
 interface Action{
     type:string,
     payload:string|number|Product|{id:string,name:string,nickname:string}[]
 }
 
 interface Props{
-  dispatch:React.Dispatch<Action>
+  dispatch:React.Dispatch<Action>,
+    state:State
 }
 
 
 
 
-export const CreateKittySecondStep = ({dispatch}:Props) => {
+export const CreateKittySecondStep = ({dispatch,state}:Props) => {
   const friends = [
     { id: "1", nickname: "jakub1", name: "jakub1" },
     { id: "2", nickname: "jakub2", name: "jakub2" },
@@ -24,7 +34,7 @@ export const CreateKittySecondStep = ({dispatch}:Props) => {
     { id: "4", nickname: "jakub4", name: "jakub4" },
   ];
 
-  const [users,setUsers]=useState<{id:string,nickname:string,name:string}[]>([])
+  const [users,setUsers]=useState<{id:string,nickname:string,name:string}[]>(state.data.users)
     const [user,setUser]=useState<{id:string,nickname:string,name:string}>()
 const handleOnChange=(e:React.ChangeEvent<HTMLSelectElement>)=>{
 
@@ -41,14 +51,14 @@ const handleSubmit=()=>{
               [item["id"], item])).values()];
           console.log(unique)
           setUsers(unique);
-          dispatch({type: "userAdd", payload: unique})
+          dispatch({type: "user", payload: unique})
       }
 }
 
 const handleDelete=(id:string)=>{
     const copy=users.filter(x=>x.id!==id);
     setUsers(copy)
-    dispatch({type: "userDelete", payload: copy})
+    dispatch({type: "user", payload: copy})
 }
 
 console.log(users)
