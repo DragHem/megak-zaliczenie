@@ -4,7 +4,7 @@ import { Product } from "../../interfaces/product/product";
 interface Props {
   state: State;
   setProduct: React.Dispatch<React.SetStateAction<Product>>;
-  product: { name: string; price: number; userIDs: []; id?: string };
+  product: { name: string; price: number; userIDs: string[]; id?: string | undefined };
 }
 
 interface State {
@@ -14,12 +14,12 @@ interface State {
     description: string;
     totalValue: number;
     product: Product[];
-    users: { id: string; name: string; nickname: string }[];
+    users: { id: string|undefined; name: string; nickname: string }[];
   };
 }
 
 export const FriendsList = ({ state, setProduct, product }: Props) => {
-  const handleClick = (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleClick = (id: string, e:React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       const copy: string[] = product.userIDs;
       copy.push(id);
@@ -41,8 +41,8 @@ export const FriendsList = ({ state, setProduct, product }: Props) => {
         <p>
           <input
             className={"checkbox checkbox-warning"}
-            checked={product.userIDs.indexOf(user.id) !== -1}
-            onClick={(e) => handleClick(user.id, e)}
+            checked={product.userIDs.indexOf(user.id as string) !== -1}
+            onChange={(e) => handleClick(user.id as string, e)}
             type={"checkbox"}
           />
           {user.name}
