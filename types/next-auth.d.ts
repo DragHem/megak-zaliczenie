@@ -6,7 +6,12 @@ interface User extends DefaultUser {
 
 declare module "next-auth" {
   interface Session {
-    user?: User;
+    user: {
+      image: string;
+      address: string;
+      email: string;
+      id: string;
+    };
   }
 }
 
