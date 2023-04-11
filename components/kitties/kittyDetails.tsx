@@ -1,12 +1,10 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { Chart } from "./chart";
-import { product } from "../../interfaces/kitty";
-import { CreateKitty } from "./createKitty";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export const KittyDetails = () => {
+const KittyDetails = () => {
   const { query } = useRouter();
 
   if (query.id) {
@@ -24,14 +22,22 @@ export const KittyDetails = () => {
     if (!data) return null;
 
     const productData = data.products.map((product: product) => (
+    // @ts-ignore
+
+    const productData = data.products.map((product) => (
       <div>
         {product.name} {product.price}{" "}
-        {product.users.map((user) => (
-          <p>{user.name}</p>
-        ))}
+        {product.users.map(
+          (
+            // @ts-ignore
+            user
+          ) => (
+            <p>{user.name}</p>
+          )
+        )}
       </div>
     ));
-    console.log(data);
+
     return (
       <div>
         <Chart data={data.data} />
@@ -43,3 +49,5 @@ export const KittyDetails = () => {
 
   return <h2>Wybierz zrzutkę do przeglądania</h2>;
 };
+
+export default KittyDetails;

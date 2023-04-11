@@ -5,7 +5,7 @@ import { authOptions } from "../api/auth/[...nextauth]";
 import UserCard from "../../components/User/UserCard";
 import { UserService } from "../../services";
 import omit from "lodash/omit";
-import UserFriends from "../../components/User/UserFriends";
+import UserFriendsTable from "../../components/User/Friends/UserFriendsTable/UserFriendsTable";
 
 interface Props {
   user: UserResponse;
@@ -21,9 +21,10 @@ type UserResponse = {
 
 const UserPage = ({ user }: Props) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-8">
+    <div className="flex flex-col md:flex-row gap-4 h-full">
       <UserCard user={user} />
-      <UserFriends />
+      <UserFriendsTable />
+      <UserFriendsTable />
     </div>
   );
 };

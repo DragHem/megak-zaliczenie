@@ -9,23 +9,31 @@ const NavLinks = () => {
   if (data)
     return (
       <>
-        <Link href="/kitty" className="btn mb-2 sm:mb-0">
-          Twoje zrzutki
-        </Link>
-        <Button primary onClick={signOut}>
-          Wyloguj
-        </Button>
+        <li>
+          <Link href="/kitty" className="btn mb-2 sm:mb-0">
+            Twoje zrzutki
+          </Link>
+        </li>
+        <li>
+          <Button primary onClick={signOut}>
+            Wyloguj
+          </Button>
+        </li>
       </>
     );
 
   return (
     <>
-      <Link href="/auth/signin" className="btn mb-2 sm:mb-0">
-        Zaloguj się
-      </Link>
-      <Link href="/auth/signup" className="btn btn-primary">
-        Zarejestruj się
-      </Link>
+      <li>
+        <Link href="/auth/signin" className="btn mb-2 sm:mb-0">
+          Zaloguj się
+        </Link>
+      </li>
+      <li>
+        <Link href="/auth/signup" className="btn btn-primary">
+          Zarejestruj się
+        </Link>
+      </li>
     </>
   );
 };
