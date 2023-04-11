@@ -48,9 +48,8 @@ export const CreateKittyThirdStep = ({dispatch,state}:Props) => {
 
 
             const id=uuid();
-            console.log(id)
             const copyProducts = products;
-            copyProducts.push(product)
+            copyProducts.push({...product,price:Math.floor(product.price*100)/100})
             setProduct({id:"",name: "", price: 0, userIDs: []})
             setProducts(copyProducts);
 
@@ -64,9 +63,11 @@ export const CreateKittyThirdStep = ({dispatch,state}:Props) => {
         dispatch({type:"product",payload:copyProducts.map(x=>{delete x.id;return x})})
     }
 
-    console.log(state.data.product)
+
+
+
     return(
-    <div className={"grid m-5 p-4 place-items-center gap-x-5"}>
+    <div className={"grid m-5 p-4 overflow-y-auto place-items-center gap-x-5"}>
         <Divider />
         <div className={"flex"}>
             <Button onClick={()=>setShowFriendsList(prevState => !prevState)} primary>Pokaż uczestników zrzutki</Button>
@@ -81,7 +82,7 @@ export const CreateKittyThirdStep = ({dispatch,state}:Props) => {
         <input
             type={"number"}
             placeholder={"Cena"}
-            value={product.price}
+            value={String(product.price)}
             className="input mt-1 ml-5 mb-5 input-bordered placeholder:opacity-70"
             onChange={(e)=>setProduct({...product,price:Number(e.target.value)})}
         />

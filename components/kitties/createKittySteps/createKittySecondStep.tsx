@@ -49,7 +49,7 @@ const handleSubmit=()=>{
           // @ts-ignore
           const unique = [...new Map(copy.map(item =>
               [item["id"], item])).values()];
-          console.log(unique)
+
           setUsers(unique);
           dispatch({type: "user", payload: unique})
       }
@@ -61,12 +61,13 @@ const handleDelete=(id:string)=>{
     dispatch({type: "user", payload: copy})
 }
 
-console.log(users)
+
 
   return (
-      <div className={"grid m-5 place-items-center"}>
+      <div className={"grid m-5 overflow-y-auto place-items-center"}>
           <Divider />
-        <div className={"flex mt-5 mb-5 w-96"}>
+
+            <Button primary onClick={handleSubmit}>Dodaj znajomego</Button>
           <select onChange={(e)=>handleOnChange(e)} className="select select-bordered select-lg w-full max-w-xs">
             <option  selected disabled>
               Wybierz Przyjaciela z listy
@@ -75,9 +76,9 @@ console.log(users)
               <option value={x.id}>{x.name}</option>
             ))}
           </select>
-            <Button primary onClick={handleSubmit}>Dodaj znajomego</Button>
 
-        </div>
+
+
           <div className={"content-center h-64 overflow-y-scroll scrollbar-hide"}>
           {users.map(x=><p >{x.name} <Button primary onClick={()=>handleDelete(x.id)}>Usuń</Button></p>)}
           </div>
