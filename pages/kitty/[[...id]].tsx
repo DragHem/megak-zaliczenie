@@ -18,7 +18,7 @@ type Props = {
 export default function kitties({ kitties }: Props) {
   return (
     <div className="flex overflow-hidden gap-4 h-full">
-      <div className="p-3 flex-grow w-1/4 h-1/1 card gap-3 bg-base-300 rounded-box">
+      <div className="p-3 flex-grow w-1/4 h-auto overflow-y-auto scrollbar-hide card gap-3 bg-base-300 rounded-box">
         <KittiesList kitties={kitties} />
       </div>
 

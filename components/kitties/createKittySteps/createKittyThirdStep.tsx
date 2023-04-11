@@ -1,13 +1,14 @@
 import {Product} from "../../../interfaces/product/product";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Button from "../../common/Button";
 import Divider from "../../common/Divider";
 import {FriendsList} from "../../common/FriendsList";
+import {v4 as uuid} from 'uuid'
 
 
 interface Action{
     type:string,
-    payload:string|number|Product|{id:string,name:string,nickname:string}[]
+    payload:string|number|Product[]|{id:string,name:string,nickname:string}[]
 }
 
 interface Props{
@@ -32,20 +33,35 @@ interface State{
 
 export const CreateKittyThirdStep = ({dispatch,state}:Props) => {
     const [showFriendsList,setShowFriendsList]=useState<boolean>(false)
-    const [product,setProduct]=useState<{name:string,price:number,userIDs:[],id:string}>({id:"",name:"",price:0,userIDs:[]})
-    const [products,setProducts]=useState<Product[]>([])
+    const [product,setProduct]=useState<{name:string,price:number,userIDs:string[],id?:string}>({id:uuid(),name:"",price:0,userIDs:[]})
+    const [products,setProducts]=useState<{name:string,price:number,userIDs:string[],id?:string}[]>([])
+
+    useEffect(()=>{
+        const array:{name:string,price:number,userIDs:string[],id?:string}[]=[]
+        state.data.product.forEach(x=>array.push({name:x.name,price:x.price,userIDs:x.userIDs,id:uuid()}))
+        setProducts(array)
+    },[])
 
     const handleAddProduct=()=>{
+
         if(product.name!=""&&product.price>0&&product.userIDs.length!==0) {
+
+
+            const id=uuid();
+            console.log(id)
             const copyProducts = products;
             copyProducts.push(product)
             setProduct({id:"",name: "", price: 0, userIDs: []})
             setProducts(copyProducts);
+
+            dispatch({type:"product",payload:products.map(x=>{delete x.id;return x})})
         }
     }
 
-    const handleSubmit=()=>{
-
+    const handleDelete=(id:string)=>{
+        const copyProducts=products.filter(x=>x.id!==id)
+        setProducts(copyProducts);
+        dispatch({type:"product",payload:copyProducts.map(x=>{delete x.id;return x})})
     }
 
     console.log(state.data.product)
@@ -71,7 +87,6 @@ export const CreateKittyThirdStep = ({dispatch,state}:Props) => {
         />
         </div>
     <Button primary onClick={()=>handleAddProduct()}>Dodaj produkt</Button>
-        <Button primary onClick={()=>handleSubmit()}>Zatwierdź</Button>
-        {products.map(x=><p>{x.name} : {x.price}</p>)}
+        {products.map(x=><p>{x.name} : {x.price} <Button primary onClick={()=>handleDelete(x.id)}>Usuń</Button></p>)}
     </div>)
 }

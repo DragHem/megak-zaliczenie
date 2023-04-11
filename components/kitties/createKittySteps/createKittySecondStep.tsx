@@ -15,7 +15,7 @@ interface State{
 }
 interface Action{
     type:string,
-    payload:string|number|Product|{id:string,name:string,nickname:string}[]
+    payload:string|number|Product[]|{id:string,name:string,nickname:string}[]
 }
 
 interface Props{
@@ -78,7 +78,7 @@ console.log(users)
             <Button primary onClick={handleSubmit}>Dodaj znajomego</Button>
 
         </div>
-          <div className={"content-center"}>
+          <div className={"content-center h-64 overflow-y-scroll scrollbar-hide"}>
           {users.map(x=><p >{x.name} <Button primary onClick={()=>handleDelete(x.id)}>Usuń</Button></p>)}
           </div>
       </div>
