@@ -6,10 +6,8 @@ export const Chart = ({
 }: {
   data: { value: number; name: string }[];
 }) => {
-  console.log(data);
   if (!data) return null;
-  if (data.length == 0) return null;
-
+  if (data.length == 0) data = [];
   const theme = {
     darkMode: true,
     legend: {

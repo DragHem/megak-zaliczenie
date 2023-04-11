@@ -3,7 +3,6 @@ export interface product {
   name: string;
   price: number;
   users: user[];
-  kittyId: string;
 }
 
 export interface user {

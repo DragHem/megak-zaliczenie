@@ -1,14 +1,18 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { Chart } from "./chart";
+import { product } from "../../interfaces/kitty";
+import { CreateKitty } from "./createKitty";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const KittyDetails = () => {
   const { query } = useRouter();
-  console.log(query);
 
   if (query.id) {
+    if (query.id == "createKitty") {
+      return <CreateKitty />;
+    }
     const { data, error, isLoading } = useSWR(
       `/api/kitty/${query.id![0]}`,
       fetcher
@@ -19,7 +23,7 @@ export const KittyDetails = () => {
     }
     if (!data) return null;
 
-    const productData = data.products.map((product) => (
+    const productData = data.products.map((product: product) => (
       <div>
         {product.name} {product.price}{" "}
         {product.users.map((user) => (
@@ -27,7 +31,7 @@ export const KittyDetails = () => {
         ))}
       </div>
     ));
-
+    console.log(data);
     return (
       <div>
         <Chart data={data.data} />

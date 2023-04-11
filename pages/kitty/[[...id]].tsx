@@ -8,6 +8,8 @@ import { GetServerSideProps } from "next";
 import { UserService } from "../../services";
 
 import { kitty } from "../../interfaces/kitty";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 type Props = {
   kitties: kitty[];
@@ -16,7 +18,7 @@ type Props = {
 export default function kitties({ kitties }: Props) {
   return (
     <div className="flex overflow-hidden gap-4 h-full">
-      <div className="p-3 flex-grow w-1/4 h-1/1 card gap-3 bg-base-300 rounded-box">
+      <div className="p-3 flex-grow w-1/4 h-auto overflow-y-auto scrollbar-hide card gap-3 bg-base-300 rounded-box">
         <KittiesList kitties={kitties} />
       </div>
 
@@ -28,6 +30,8 @@ export default function kitties({ kitties }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
   const RespKitties = await UserService.getUserKitties(
     "641edd7c87cac162fa64d757",
     false
