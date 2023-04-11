@@ -10,9 +10,8 @@ const KittiesList = ({ kitties }: Props) => {
   return (
     <>
       <CreateKittyCard />
-      {kitties.map((kitty) => (
-        <KittyCard kitty={kitty} key={kitty.id} />
-      ))}
+      {kitties &&
+        kitties.map((kitty) => <KittyCard kitty={kitty} key={kitty.id} />)}
     </>
   );
 };
