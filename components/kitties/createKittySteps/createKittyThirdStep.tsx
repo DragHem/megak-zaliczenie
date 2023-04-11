@@ -58,7 +58,7 @@ export const CreateKittyThirdStep = ({dispatch,state}:Props) => {
         }
     }
 
-    const handleDelete=(id:string)=>{
+    const handleDelete=(id:string|undefined)=>{
         const copyProducts=products.filter(x=>x.id!==id)
         setProducts(copyProducts);
         dispatch({type:"product",payload:copyProducts.map(x=>{delete x.id;return x})})

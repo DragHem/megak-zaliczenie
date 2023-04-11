@@ -8,6 +8,7 @@ import { CreateKittySecondStep } from "./createKittySteps/createKittySecondStep"
 import {Product} from "../../interfaces/product/product";
 import {CreateKittyThirdStep} from "./createKittySteps/createKittyThirdStep";
 import {CreateKittyFourthStep} from "./createKittySteps/createKittyFourthStep";
+import {useSession} from "next-auth/react";
 
 interface State{
   data: {
@@ -53,6 +54,7 @@ function setData(state:State,action:Action):State{
 }
 
 export const CreateKitty = () => {
+    const {data}=useSession()
   const [step, setStep] = useState<number>(1);
   const [state, dispatch] = useReducer(setData,{data:  {userId: "",
         name: "",
@@ -60,9 +62,8 @@ export const CreateKitty = () => {
         totalValue: 0,
         product:[],
         users: []}})
-    console.log(state)
 
-
+    console.log(data)
   return (
     <div className="grid place-items-center mt-10">
       <ul className="steps">
