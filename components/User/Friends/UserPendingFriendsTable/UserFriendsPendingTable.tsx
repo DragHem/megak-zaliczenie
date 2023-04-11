@@ -1,11 +1,12 @@
 import React from "react";
 import UserFriendsTablePengingRow from "./UserFriendsTablePengingRow";
 import useSWR from "swr";
+import UserFriendsTablePengingOutgoingRow from "./UserFriendsTablePengingOutgoingRow";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const UserFriendsPendingTable = () => {
-  const { data, error, isLoading } = useSWR<
+  const { data: outgoingInv } = useSWR<
     {
       id: string;
       name: string;
@@ -13,6 +14,15 @@ const UserFriendsPendingTable = () => {
       email: string;
     }[]
   >("/api/user/invites/outgoing", fetcher);
+
+  const { data: incomingInv } = useSWR<
+    {
+      id: string;
+      name: string;
+      nickname: string;
+      email: string;
+    }[]
+  >("/api/user/invites/incoming", fetcher);
 
   return (
     <div className="flex flex-col bg-base-200 rounded-xl w-full md:w-1/3 md:overflow-hidden p-2">
@@ -28,8 +38,15 @@ const UserFriendsPendingTable = () => {
           </thead>
 
           <tbody>
-            {data &&
-              data.map((friend) => (
+            {outgoingInv &&
+              outgoingInv.map((friend) => (
+                <UserFriendsTablePengingOutgoingRow
+                  key={friend.id}
+                  {...friend}
+                />
+              ))}
+            {incomingInv &&
+              incomingInv.map((friend) => (
                 <UserFriendsTablePengingRow key={friend.id} {...friend} />
               ))}
           </tbody>

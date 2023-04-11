@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
 
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -6,6 +6,7 @@ import { UserService } from "services";
 import { PasswordModule } from "../../../lib/passwordModule";
 import validator from "validator";
 import { ErrorResponseStatus } from "interfaces/ErrorResponseStatus";
+import { JWT } from "next-auth/jwt";
 
 export const authOptions = {
   providers: [
@@ -70,6 +71,22 @@ export const authOptions = {
   ],
   pages: {
     signIn: "/auth/signin",
+  },
+  callbacks: {
+    async jwt({ token, user }: any) {
+      if (user) {
+        token.id = user.id;
+      }
+
+      return token;
+    },
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (token && session.user) {
+        session.user.id = token.id;
+      }
+
+      return session;
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
