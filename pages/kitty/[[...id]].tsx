@@ -2,12 +2,8 @@ import React from "react";
 
 import { GetServerSideProps } from "next";
 
-const KittiesList = React.lazy(
-  () => import("../../components/kitties/kittiesList")
-);
-const KittyDetails = React.lazy(
-  () => import("../../components/kitties/kittyDetails")
-);
+import KittiesList from "../../components/kitties/kittiesList";
+import KittyDetails from "../../components/kitties/kittyDetails";
 
 import { UserService } from "../../services";
 

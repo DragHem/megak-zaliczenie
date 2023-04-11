@@ -1,10 +1,11 @@
-import client from "../lib/prismadb";
+// import client from "../lib/prismadb";
 import { Product } from "../interfaces/product/product";
 import { UserService } from "./userService";
+import prisma from "../prisma/prisma";
 
 export abstract class KittyService {
   public static async getKitty(id: string) {
-    const kitty = await client.kitty.findFirst({
+    const kitty = await prisma.kitty.findFirst({
       where: { id },
       select: {
         name: true,
@@ -65,7 +66,7 @@ export abstract class KittyService {
     product: Product[],
     users: string[]
   ) {
-    return await client.kitty.create({
+    return await prisma.kitty.create({
       data: {
         name,
         description,
@@ -95,7 +96,7 @@ export abstract class KittyService {
     description: string,
     totalValue: number
   ) {
-    return await client.kitty.update({
+    return await prisma.kitty.update({
       where: { id },
       data: {
         name,
@@ -109,7 +110,7 @@ export abstract class KittyService {
   }
 
   public static async addProductsToKitty(products: Product[], id: string) {
-    return await client.kitty.update({
+    return await prisma.kitty.update({
       where: { id },
       data: {
         products: {
@@ -122,7 +123,7 @@ export abstract class KittyService {
   }
 
   public static async addUserToKitty(id: string, user: string) {
-    return await client.kitty.update({
+    return await prisma.kitty.update({
       where: { id },
       data: {
         users: {
@@ -133,7 +134,7 @@ export abstract class KittyService {
   }
 
   public static async deleteUserFromKitty(id: string, user: string) {
-    const resp = await client.kitty.findFirst({
+    const resp = await prisma.kitty.findFirst({
       where: { id },
       select: {
         users: true,
@@ -141,7 +142,7 @@ export abstract class KittyService {
     });
     if (resp != null) {
       const { users } = resp;
-      return await client.kitty.update({
+      return await prisma.kitty.update({
         where: { id },
         data: {
           users: {
@@ -156,7 +157,7 @@ export abstract class KittyService {
     products: { id: string }[],
     id: string
   ) {
-    return await client.kitty.update({
+    return await prisma.kitty.update({
       where: { id },
       data: {
         products: {
@@ -167,7 +168,7 @@ export abstract class KittyService {
   }
 
   public static async changeStatus(id: string, isEnded: boolean) {
-    return await client.kitty.update({
+    return await prisma.kitty.update({
       where: { id },
       data: {
         isEnded: !isEnded,
@@ -176,7 +177,7 @@ export abstract class KittyService {
   }
 
   public static async deleteKitty(id: string) {
-    return await client.kitty.update({
+    return await prisma.kitty.update({
       where: { id },
       data: {
         isVisible: false,

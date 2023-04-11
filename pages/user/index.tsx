@@ -6,6 +6,7 @@ import UserCard from "../../components/User/UserCard";
 import { UserService } from "../../services";
 import omit from "lodash/omit";
 import UserFriendsTable from "../../components/User/Friends/UserFriendsTable/UserFriendsTable";
+import UserFriendsPendingTable from "../../components/User/Friends/UserPendingFriendsTable/UserFriendsPendingTable";
 
 interface Props {
   user: UserResponse;
@@ -24,7 +25,7 @@ const UserPage = ({ user }: Props) => {
     <div className="flex flex-col md:flex-row gap-4 h-full">
       <UserCard user={user} />
       <UserFriendsTable />
-      <UserFriendsTable />
+      <UserFriendsPendingTable />
     </div>
   );
 };

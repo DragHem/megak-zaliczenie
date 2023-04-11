@@ -53,7 +53,7 @@ const SignUpPage = () => {
       className="form-control grid place-items-center"
       onSubmit={handleSubmit((formValues) => formHandler(formValues))}
     >
-      <h2 className="text-3xl my-16">Rejestracja</h2>
+      <h2 className="text-3xl my-3 md:my-16">Rejestracja</h2>
       <Input
         icon={faRightToBracket}
         placeholder="Marcin"

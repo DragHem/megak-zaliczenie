@@ -1,9 +1,11 @@
-import client from "../lib/prismadb";
+// import client from "../lib/prismadb";
+import prisma from "../prisma/prisma";
+
 import { ErrorResponseStatus } from "../interfaces/ErrorResponseStatus";
 
 export abstract class UserService {
   public static async getUser(email: string) {
-    return await client.user.findUnique({
+    return await prisma.user.findUnique({
       where: {
         email,
       },
@@ -22,13 +24,14 @@ export abstract class UserService {
   }
 
   public static async getUserFriends(ids: string[]) {
-    return await client.user.findMany({
+    return await prisma.user.findMany({
       where: {
         id: {
           in: ids,
         },
       },
       select: {
+        email: true,
         id: true,
         name: true,
         nickname: true,
@@ -37,7 +40,7 @@ export abstract class UserService {
   }
 
   public static async getOutgoingInvitations(id: string) {
-    const ids = await client.user.findFirst({
+    const ids = await prisma.user.findFirst({
       where: {
         id,
       },
@@ -51,7 +54,7 @@ export abstract class UserService {
   }
 
   public static async getIncomingInvitations(id: string) {
-    const ids = await client.user.findFirst({
+    const ids = await prisma.user.findFirst({
       where: {
         id,
       },
@@ -65,7 +68,7 @@ export abstract class UserService {
   }
 
   public static async incomingInvitations(id: string) {
-    return await client.user.findMany({
+    return await prisma.user.findMany({
       where: {
         id,
       },
@@ -82,7 +85,7 @@ export abstract class UserService {
     nickname: string,
     activationLink: string
   ) {
-    return await client.user.create({
+    return await prisma.user.create({
       data: {
         name,
         email,
@@ -98,7 +101,7 @@ export abstract class UserService {
     name: string,
     nickname: string
   ) {
-    return await client.user.update({
+    return await prisma.user.update({
       where: { email },
       data: {
         name,
@@ -108,7 +111,7 @@ export abstract class UserService {
   }
 
   public static async findFriend(email: string, nickname: string) {
-    return await client.user.findMany({
+    return await prisma.user.findMany({
       where: {
         OR: [
           {
@@ -130,7 +133,7 @@ export abstract class UserService {
   }
 
   public static async sendFriendRequest(userId: string, friendId: string) {
-    const userResponse = await client.user.update({
+    const userResponse = await prisma.user.update({
       where: { id: userId },
       data: {
         outgoingInvitations: {
@@ -138,7 +141,7 @@ export abstract class UserService {
         },
       },
     });
-    const friendResponse = await client.user.update({
+    const friendResponse = await prisma.user.update({
       where: { id: friendId },
       data: {
         incomingInvitations: {
@@ -150,13 +153,13 @@ export abstract class UserService {
   }
   //pierwsza osoba to osoba dostająca zaproszenie a przyjaciel to osoba wysyłająca
   public static async acceptFriendRequest(userId: string, friendId: string) {
-    const userResp = await client.user.findFirst({
+    const userResp = await prisma.user.findFirst({
       where: { id: userId },
       select: {
         incomingInvitations: true,
       },
     });
-    const friendResp = await client.user.findFirst({
+    const friendResp = await prisma.user.findFirst({
       where: { id: friendId },
       select: {
         outgoingInvitations: true,
@@ -165,7 +168,7 @@ export abstract class UserService {
 
     if (userResp) {
       const { incomingInvitations } = userResp;
-      await client.user.update({
+      await prisma.user.update({
         where: { id: userId },
         data: {
           incomingInvitations: {
@@ -179,7 +182,7 @@ export abstract class UserService {
     }
     if (friendResp) {
       const { outgoingInvitations } = friendResp;
-      await client.user.update({
+      await prisma.user.update({
         where: { id: friendId },
         data: {
           outgoingInvitations: {
@@ -194,13 +197,13 @@ export abstract class UserService {
   }
 
   public static async rejectFriendRequest(userId: string, friendId: string) {
-    const userResp = await client.user.findFirst({
+    const userResp = await prisma.user.findFirst({
       where: { id: userId },
       select: {
         incomingInvitations: true,
       },
     });
-    const friendResp = await client.user.findFirst({
+    const friendResp = await prisma.user.findFirst({
       where: { id: friendId },
       select: {
         outgoingInvitations: true,
@@ -209,7 +212,7 @@ export abstract class UserService {
 
     if (userResp) {
       const { incomingInvitations } = userResp;
-      await client.user.update({
+      await prisma.user.update({
         where: { id: userId },
         data: {
           incomingInvitations: {
@@ -220,7 +223,7 @@ export abstract class UserService {
     }
     if (friendResp) {
       const { outgoingInvitations } = friendResp;
-      await client.user.update({
+      await prisma.user.update({
         where: { id: friendId },
         data: {
           outgoingInvitations: {
@@ -232,13 +235,13 @@ export abstract class UserService {
   }
 
   public static async cancelFriendRequest(userId: string, friendId: string) {
-    const userResp = await client.user.findFirst({
+    const userResp = await prisma.user.findFirst({
       where: { id: userId },
       select: {
         outgoingInvitations: true,
       },
     });
-    const friendResp = await client.user.findFirst({
+    const friendResp = await prisma.user.findFirst({
       where: { id: friendId },
       select: {
         incomingInvitations: true,
@@ -247,7 +250,7 @@ export abstract class UserService {
 
     if (userResp) {
       const { outgoingInvitations } = userResp;
-      await client.user.update({
+      await prisma.user.update({
         where: { id: userId },
         data: {
           outgoingInvitations: {
@@ -258,7 +261,7 @@ export abstract class UserService {
     }
     if (friendResp) {
       const { incomingInvitations } = friendResp;
-      await client.user.update({
+      await prisma.user.update({
         where: { id: friendId },
         data: {
           incomingInvitations: {
@@ -270,7 +273,7 @@ export abstract class UserService {
   }
 
   public static async getUserKitties(id: string, isEnded: boolean) {
-    return await client.user.findFirst({
+    return await prisma.user.findFirst({
       where: { id },
       select: {
         kitties: {
@@ -288,7 +291,7 @@ export abstract class UserService {
   }
 
   public static async getUserKittiesDetails(id: string, isEnded: boolean) {
-    return await client.user.findFirst({
+    return await prisma.user.findFirst({
       where: {
         id,
       },
@@ -324,7 +327,7 @@ export abstract class UserService {
   }
 
   public static async activateUser(activationLink: string) {
-    const user = await client.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         activationLink,
       },
@@ -342,7 +345,7 @@ export abstract class UserService {
         status: ErrorResponseStatus.warning,
       };
 
-    const updatedUser = await client.user.update({
+    const updatedUser = await prisma.user.update({
       where: {
         email: user.email,
       },

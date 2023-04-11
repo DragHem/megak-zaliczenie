@@ -9,12 +9,11 @@ import isEmail from "validator/lib/isEmail";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 
-const Input = React.lazy(() => import("components/common/Input"));
-const Divider = React.lazy(() => import("components/common/Divider"));
-const Button = React.lazy(() => import("components/common/Button"));
-
 import { usePopup } from "components/providers/PopupProvider";
 import { authOptions } from "../api/auth/[...nextauth]";
+import Input from "../../components/common/Input";
+import Divider from "../../components/common/Divider";
+import Button from "../../components/common/Button";
 
 type FormValues = {
   email: string;
@@ -57,7 +56,7 @@ const SignInPage = () => {
       className="form-control grid place-items-center"
       onSubmit={handleSubmit((data) => submitHandler(data))}
     >
-      <h2 className="text-3xl my-16">Logowanie</h2>
+      <h2 className="text-3xl my-3 md:my-16">Logowanie</h2>
 
       <Input
         icon={faAt}

@@ -9,8 +9,8 @@ interface Props {
   label: string;
   type?: string;
   placeholder: string;
-  register: any;
-  errorMessage: string | undefined;
+  register?: any;
+  errorMessage?: string | undefined;
 }
 
 const Input = ({

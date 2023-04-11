@@ -1,6 +1,12 @@
 import React from "react";
 
-const UserFriendsTableRow = () => {
+interface Props {
+  name: string;
+  nickname: string;
+  email: string;
+}
+
+const UserFriendsTableRow = ({ name, nickname, email }: Props) => {
   return (
     <tr>
       <td>
@@ -14,13 +20,13 @@ const UserFriendsTableRow = () => {
             </div>
           </div>
           <div>
-            <p className="font-bold">Damian</p>
-            <p className="text-sm opacity-50">DragHem</p>
+            <p className="font-bold">{name}</p>
+            <p className="text-sm opacity-50">{nickname}</p>
           </div>
         </div>
       </td>
       <td>
-        <p>pusiek99@interia.pl</p>
+        <p>{email}</p>
       </td>
       <td>
         <button className="btn btn-ghost btn-xs">Usuń</button>

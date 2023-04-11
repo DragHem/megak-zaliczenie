@@ -6,33 +6,34 @@ import Button from "../common/Button";
 const NavLinks = () => {
   const { data } = useSession();
 
-  if (data)
+  if (!data) {
     return (
       <>
         <li>
-          <Link href="/kitty" className="btn mb-2 sm:mb-0">
-            Twoje zrzutki
+          <Link href="/auth/signin" className="btn mb-2 sm:mb-0">
+            Zaloguj się
           </Link>
         </li>
         <li>
-          <Button primary onClick={signOut}>
-            Wyloguj
-          </Button>
+          <Link href="/auth/signup" className="btn btn-primary">
+            Zarejestruj się
+          </Link>
         </li>
       </>
     );
+  }
 
   return (
     <>
       <li>
-        <Link href="/auth/signin" className="btn mb-2 sm:mb-0">
-          Zaloguj się
+        <Link href="/kitty/" className="btn mb-2 sm:mb-0">
+          Twoje zrzutki
         </Link>
       </li>
       <li>
-        <Link href="/auth/signup" className="btn btn-primary">
-          Zarejestruj się
-        </Link>
+        <Button primary onClick={signOut}>
+          Wyloguj
+        </Button>
       </li>
     </>
   );

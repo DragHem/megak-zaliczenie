@@ -21,7 +21,7 @@ interface State {
 export const FriendsList = ({ state, setProduct, product }: Props) => {
   const handleClick = (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      const copy = product.userIDs;
+      const copy: string[] = product.userIDs;
       copy.push(id);
       setProduct({ ...product, userIDs: copy });
     } else {
