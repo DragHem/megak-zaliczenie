@@ -32,12 +32,7 @@ export const CreateKittySecondStep = ({ dispatch, state }: Props) => {
   const { data } = useSession();
   const [friends, setFriends] = useState<
     { id: string; nickname: string; name: string }[]
-  >([
-    { id: "1", nickname: "jakub1", name: "jakub1" },
-    { id: "2", nickname: "jakub2", name: "jakub2" },
-    { id: "3", nickname: "jakub3", name: "jakub3" },
-    { id: "4", nickname: "jakub4", name: "jakub4" },
-  ]);
+  >([]);
   const [users, setUsers] = useState<
     { id: string; nickname: string; name: string }[]
   >(state.data.users);
@@ -49,6 +44,7 @@ export const CreateKittySecondStep = ({ dispatch, state }: Props) => {
 
   useEffect(() => {
     (async () => {
+      console.log(data?.user.email);
       const friends = await fetch("/api/kitty/getFriends", {
         method: "POST",
         body: JSON.stringify({ email: data?.user.email }),
@@ -65,6 +61,7 @@ export const CreateKittySecondStep = ({ dispatch, state }: Props) => {
       setFriends(copyFriends);
     })();
   }, []);
+  console.log(state.data);
   const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const user = friends.find((user) => user.id == e.target.value);
     setUser(user);
@@ -74,7 +71,7 @@ export const CreateKittySecondStep = ({ dispatch, state }: Props) => {
     if (user) {
       const copy = users;
       copy.push(user);
-      // @ts-ignore
+
       const unique = [
         ...new Map(copy.map((item) => [item["id"], item])).values(),
       ];
