@@ -72,7 +72,7 @@ async function handler(
       const verifyMail = await MailModule.sendMail(
         email,
         "Kitty Project - Rejestracja",
-        `${process.env.NEXTAUTH_URL}auth/activate/${activationLink}`,
+        `https://kitty-eight.vercel.app/auth/activate/${activationLink}`,
         "Kitty Project - Rejestracja"
       );
 
