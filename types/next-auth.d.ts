@@ -8,7 +8,7 @@ declare module "next-auth" {
     user: {
       image: string;
       /** The user's postal address. */
-      address: string;
+      name: string;
       email: string;
       // followedByIDs: User[];
       // followingIDs: User[];

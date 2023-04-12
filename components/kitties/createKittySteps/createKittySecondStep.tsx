@@ -1,7 +1,9 @@
-import React, { useReducer, useState } from "react";
+import React, {useEffect, useReducer, useState} from "react";
 import Button from "../../common/Button";
 import {Product} from "../../../interfaces/product/product";
 import Divider from "../../common/Divider";
+import {UserService} from "../../../services";
+import {useSession} from "next-auth/react";
 
 interface State{
     data: {
@@ -27,15 +29,33 @@ interface Props{
 
 
 export const CreateKittySecondStep = ({dispatch,state}:Props) => {
-  const friends = [
-    { id: "1", nickname: "jakub1", name: "jakub1" },
-    { id: "2", nickname: "jakub2", name: "jakub2" },
-    { id: "3", nickname: "jakub3", name: "jakub3" },
-    { id: "4", nickname: "jakub4", name: "jakub4" },
-  ];
-
+    const {data}=useSession()
+    const [friends,setFriends]=useState<{id:string,nickname:string,name:string}[]>(
+        [
+            { id: "1", nickname: "jakub1", name: "jakub1" },
+            { id: "2", nickname: "jakub2", name: "jakub2" },
+            { id: "3", nickname: "jakub3", name: "jakub3" },
+            { id: "4", nickname: "jakub4", name: "jakub4" },
+        ]
+    )
   const [users,setUsers]=useState<{id:string,nickname:string,name:string}[]>(state.data.users)
     const [user,setUser]=useState<{id:string,nickname:string,name:string}>()
+
+    useEffect(()=>{
+        (async()=>{
+            console.log(data?.user.email)
+            const friends=await fetch('/api/kitty/getFriends',{
+                method:'POST',
+                body: JSON.stringify({email:data?.user.email}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const copyFriends=await friends.json()
+            copyFriends.push({id:data?.user.id,name:data?.user.name,nickname:""})
+        setFriends(copyFriends)})();
+    },[])
+
 const handleOnChange=(e:React.ChangeEvent<HTMLSelectElement>)=>{
 
       const user=friends.find(user=>user.id==e.target.value)

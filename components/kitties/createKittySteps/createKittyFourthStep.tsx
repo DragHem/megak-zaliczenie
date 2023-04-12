@@ -36,16 +36,22 @@ export const CreateKittyFourthStep=({state,dispatch}:Props)=>{
 
 
 
-    const handleSubmit=()=>{
+    const handleSubmit=async()=>{
         console.log(state.data)
         const {name,description,product,totalValue,userId,users}=state.data;
-        if(name.length==0){
-            setErrorMessage(prevState => prevState+"imie nie może być takie krótkie\n")
-        }
-        if(description.length==0)
+        if(name.length&&description.length&&product.length&&users.length)
         {
-            setErrorMessage(prevState => prevState+"opis nie może być taki krótki\n")
+
         }
+
+        const resp=await fetch('/api/kitty/createKitty',{
+            method:'POST',
+            body: JSON.stringify(state.data),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        console.log(await resp.json())
     }
 
     return(
