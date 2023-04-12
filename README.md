@@ -15,6 +15,8 @@ npm run build
 npm run start
 ```
 
+(<b>Aplikacja do poprawnego funkcjonowania potrzebuje pliku .env.</b>)
+
 Demo aplikacji: https://kitty-eight.vercel.app/
 
 Wykorzystane technologie:
