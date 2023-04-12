@@ -46,8 +46,13 @@ const KittyDetails = () => {
     return (
         <div>
           {((data.owner.id==session.data?.user.id)&&!isEnded)&&<Button primary onClick={()=>handleSubmit(query.id?query.id[0]:"")}>Zakończ zrzutkę</Button>}
+          <p className={"text-right"}>{data.createdAt}</p>
         <Chart data={data.data} />
       <div className={"grid place-items-center"}>
+        <p className={"text-2xl"}>{data.name}</p>
+        <Divider/>
+        <p className={"text-lg"}>Opis : {data.description}</p>
+        <Divider/>
         <table className="table w-full">
           <thead>
           <tr>
