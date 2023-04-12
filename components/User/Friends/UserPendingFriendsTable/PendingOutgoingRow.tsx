@@ -1,12 +1,20 @@
 import React from "react";
+import usePost from "../../../../hooks/usePost";
 
 interface Props {
+  id: string;
   name: string;
   nickname: string;
   email: string;
 }
 
-const UserFriendsTableRow = ({ name, nickname, email }: Props) => {
+const PendingOutgoingRow = ({ name, nickname, email, id }: Props) => {
+  const [_, call] = usePost("/api/user/invites/outgoing");
+
+  const cancelHandler = (id: string) => {
+    call({ id });
+  };
+
   return (
     <tr>
       <td>
@@ -29,10 +37,15 @@ const UserFriendsTableRow = ({ name, nickname, email }: Props) => {
         <p>{email}</p>
       </td>
       <td>
-        <button className="btn btn-ghost btn-xs">Usuń</button>
+        <button
+          className="btn btn-ghost btn-xs"
+          onClick={() => cancelHandler(id)}
+        >
+          Anuluj
+        </button>
       </td>
     </tr>
   );
 };
 
-export default UserFriendsTableRow;
+export default PendingOutgoingRow;

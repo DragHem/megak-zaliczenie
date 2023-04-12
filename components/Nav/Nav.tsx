@@ -8,6 +8,8 @@ import NavMenu from "./NavMenu";
 const Nav = () => {
   const { data } = useSession();
 
+  console.log(data);
+
   return (
     <div className="navbar sticky top-0 bg-base-300">
       <div className="flex-none sm:hidden">
@@ -25,7 +27,11 @@ const Nav = () => {
       </div>
       <div className="px-2 mx-2">
         {!data && <NavMenu />}
-        {data && <Avatar />}
+        {data && (
+          <>
+            <Avatar /> <NavMenu />
+          </>
+        )}
       </div>
     </div>
   );

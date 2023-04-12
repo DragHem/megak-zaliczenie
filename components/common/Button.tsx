@@ -10,17 +10,13 @@ interface Props {
 const Button = ({ children, primary, onClick, disabled }: Props) => {
   if (primary)
     return (
-      <button
-        className="btn btn-primary m-1"
-        disabled={disabled}
-        onClick={onClick}
-      >
+      <button className="btn btn-primary" disabled={disabled} onClick={onClick}>
         {children}
       </button>
     );
 
   return (
-    <button className="btn m-1" disabled={disabled}>
+    <button className="btn" disabled={disabled}>
       {children}
     </button>
   );

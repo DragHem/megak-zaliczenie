@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { InviteFriend } from "../../../hooks/usePost";
+import { InviteFriend } from "../../../../hooks/usePost";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]";
-import { ErrorResponseStatus } from "../../../interfaces/ErrorResponseStatus";
-import { UserService } from "../../../services";
+import { authOptions } from "../../auth/[...nextauth]";
+import { ErrorResponseStatus } from "../../../../interfaces/ErrorResponseStatus";
+import { UserService } from "../../../../services";
+import isEmail from "validator/lib/isEmail";
 
 type Resp = {
   message: string;
@@ -20,6 +21,12 @@ async function UserFriendsHandler(
     switch (req.method) {
       case "POST": {
         const { email } = req.body as InviteFriend;
+
+        if (!isEmail(email))
+          return res.json({
+            message: "Musisz podać prawidłowy adres email!",
+            status: ErrorResponseStatus.error,
+          });
 
         //Zaproszenie samego siebie +
         if (email === session.user.email)

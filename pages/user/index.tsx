@@ -10,6 +10,7 @@ import UserFriendsPendingTable from "../../components/User/Friends/UserPendingFr
 
 interface Props {
   user: UserResponse;
+  userFriends: UserResponse[];
 }
 
 type UserResponse = {
@@ -20,11 +21,11 @@ type UserResponse = {
   nickname: string;
 };
 
-const UserPage = ({ user }: Props) => {
+const UserPage = ({ user, userFriends }: Props) => {
   return (
     <div className="flex flex-col md:flex-row gap-4 h-full">
       <UserCard user={user} />
-      <UserFriendsTable />
+      <UserFriendsTable friends={userFriends} />
       <UserFriendsPendingTable />
     </div>
   );

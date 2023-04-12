@@ -10,7 +10,7 @@ const NavLinks = () => {
     return (
       <>
         <li>
-          <Link href="/auth/signin" className="btn mb-2 sm:mb-0">
+          <Link href="/auth/signin" className="btn mb-2 md:mb-0">
             Zaloguj się
           </Link>
         </li>
@@ -26,7 +26,7 @@ const NavLinks = () => {
   return (
     <>
       <li>
-        <Link href="/kitty/" className="btn mb-2 sm:mb-0">
+        <Link href="/kitty/" className="btn mb-2 md:mb-0 md:ml-2">
           Twoje zrzutki
         </Link>
       </li>

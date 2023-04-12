@@ -36,7 +36,25 @@ async function UserFriendsHandler(
 
         return res.json(outgoingInvites);
       }
+      case "POST": {
+        try {
+          const { id } = req.body as {
+            id: string;
+          };
 
+          await UserService.cancelFriendRequest(session.user.id, id);
+
+          return res.json({
+            message: "Pomyślnie zaakceptowanie zaproszenie.",
+            status: ErrorResponseStatus.success,
+          });
+        } catch (e) {
+          return res.json({
+            message: "Błąd serwera, prosimy spróbować ponownie później.",
+            status: ErrorResponseStatus.error,
+          });
+        }
+      }
       default:
         return res.json({
           message: "Błąd serwera!",

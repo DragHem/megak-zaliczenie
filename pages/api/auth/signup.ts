@@ -72,11 +72,9 @@ async function handler(
       const verifyMail = await MailModule.sendMail(
         email,
         "Kitty Project - Rejestracja",
-        `http://localhost:3000/auth/activate/${activationLink}`,
+        `${process.env.NEXTAUTH_URL}auth/activate/${activationLink}`,
         "Kitty Project - Rejestracja"
       );
-
-      console.log(verifyMail);
 
       if (newUser && verifyMail) {
         res.status(201).json({

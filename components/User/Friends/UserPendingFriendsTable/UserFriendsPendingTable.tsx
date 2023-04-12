@@ -1,7 +1,7 @@
 import React from "react";
-import UserFriendsTablePengingRow from "./UserFriendsTablePengingRow";
 import useSWR from "swr";
-import UserFriendsTablePengingOutgoingRow from "./UserFriendsTablePengingOutgoingRow";
+import PendingIncomingRow from "./PendingIncomingRow";
+import PendingOutgoingRow from "./PendingOutgoingRow";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -13,7 +13,7 @@ const UserFriendsPendingTable = () => {
       nickname: string;
       email: string;
     }[]
-  >("/api/user/invites/outgoing", fetcher);
+  >("/api/user/invites/outgoing", fetcher, { refreshInterval: 1000 });
 
   const { data: incomingInv } = useSWR<
     {
@@ -22,14 +22,18 @@ const UserFriendsPendingTable = () => {
       nickname: string;
       email: string;
     }[]
-  >("/api/user/invites/incoming", fetcher);
+  >("/api/user/invites/incoming", fetcher, { refreshInterval: 1000 });
 
   return (
     <div className="flex flex-col bg-base-200 rounded-xl w-full md:w-1/3 md:overflow-hidden p-2">
-      <h2 className="text-primary text-xl text-center">Zaproszeni znajomi</h2>
       <div className="overflow-x-auto w-full scrollbar-hide">
         <table className="table w-full table-zebra table-compact">
           <thead>
+            <tr>
+              <th colSpan={3} className="text-primary text-xl text-center">
+                Zaproszenia
+              </th>
+            </tr>
             <tr>
               <th>Imię</th>
               <th>Email</th>
@@ -38,16 +42,23 @@ const UserFriendsPendingTable = () => {
           </thead>
 
           <tbody>
+            <tr>
+              <td colSpan={3} className="text-primary text-center">
+                Wychodzące
+              </td>
+            </tr>
             {outgoingInv &&
               outgoingInv.map((friend) => (
-                <UserFriendsTablePengingOutgoingRow
-                  key={friend.id}
-                  {...friend}
-                />
+                <PendingOutgoingRow key={friend.id} {...friend} />
               ))}
+            <tr>
+              <td colSpan={3} className="text-primary text-center">
+                Przychodzące
+              </td>
+            </tr>
             {incomingInv &&
               incomingInv.map((friend) => (
-                <UserFriendsTablePengingRow key={friend.id} {...friend} />
+                <PendingIncomingRow key={friend.id} {...friend} />
               ))}
           </tbody>
         </table>

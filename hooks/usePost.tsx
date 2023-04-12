@@ -38,7 +38,7 @@ const stateReducer = (state: State, action: Action): State => {
 
 export default function usePost(
   url: string
-): [State, (body: Signup | InviteFriend) => Promise<void>] {
+): [State, (body: Signup | InviteFriend | any) => Promise<void>] {
   const [state, dispatch] = useReducer(stateReducer, {
     isLoading: false,
     status: undefined,
@@ -46,7 +46,7 @@ export default function usePost(
   });
 
   const sendData = useCallback(
-    async (body: Signup | InviteFriend) => {
+    async (body: Signup | InviteFriend | any) => {
       dispatch({ type: ActionEnum.LOADING });
 
       try {

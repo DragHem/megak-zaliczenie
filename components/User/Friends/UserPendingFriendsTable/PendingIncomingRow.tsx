@@ -1,23 +1,25 @@
 import React from "react";
+import usePost from "../../../../hooks/usePost";
 import { useRouter } from "next/router";
 
 interface Props {
   id: string;
   name: string;
-  email: string;
-  image: string | null;
   nickname: string;
+  email: string;
 }
 
-const UserFriendsTableRow = ({ id, name, nickname, image, email }: Props) => {
+const PendingIncomingRow = ({ name, nickname, email, id }: Props) => {
   const router = useRouter();
+  const [_, call] = usePost("/api/user/invites/incoming");
 
-  const removeHandler = async (id: string) => {
-    await fetch(`/api/user/friends/${id}`, {
-      method: "DELETE",
-    });
-
+  const acceptHandler = (id: string) => {
+    call({ id, type: "ACCEPT" });
     router.reload();
+  };
+
+  const rejectHandler = (id: string) => {
+    call({ id, type: "REJECT" });
   };
 
   return (
@@ -27,7 +29,7 @@ const UserFriendsTableRow = ({ id, name, nickname, image, email }: Props) => {
           <div className="avatar">
             <div className="mask mask-squircle w-12 h-12">
               <img
-                src={image || "/avatar-placeholder.webp"}
+                src="/avatar-placeholder.webp"
                 alt="Avatar Tailwind CSS Component"
               />
             </div>
@@ -44,13 +46,19 @@ const UserFriendsTableRow = ({ id, name, nickname, image, email }: Props) => {
       <td>
         <button
           className="btn btn-ghost btn-xs"
-          onClick={() => removeHandler(id)}
+          onClick={() => acceptHandler(id)}
         >
-          Usuń
+          Akceptuj
+        </button>
+        <button
+          className="btn btn-ghost btn-xs"
+          onClick={() => rejectHandler(id)}
+        >
+          Odrzuć
         </button>
       </td>
     </tr>
   );
 };
 
-export default UserFriendsTableRow;
+export default PendingIncomingRow;

@@ -37,6 +37,39 @@ async function UserFriendsHandler(
         return res.json(outgoingInvites);
       }
 
+      case "POST": {
+        try {
+          const { id, type } = req.body as {
+            id: string;
+            type: "ACCEPT" | "REJECT";
+          };
+
+          if (type === "ACCEPT") {
+            await UserService.acceptFriendRequest(session.user.id, id);
+
+            return res.json({
+              message: "Pomyślnie zaakceptowanie zaproszenie.",
+              status: ErrorResponseStatus.success,
+            });
+          }
+
+          if (type === "REJECT") {
+            await UserService.rejectFriendRequest(session.user.id, id);
+
+            return res.json({
+              message: "Pomyślnie odrzucono zaproszenie",
+              status: ErrorResponseStatus.success,
+            });
+          }
+        } catch (e) {
+          return res.json({
+            message: "Błąd serwera, prosimy spróbować ponownie później.",
+            status: ErrorResponseStatus.error,
+          });
+        }
+        break;
+      }
+
       default:
         return res.json({
           message: "Błąd serwera!",

@@ -35,6 +35,7 @@ export abstract class UserService {
         id: true,
         name: true,
         nickname: true,
+        image: true,
       },
     });
   }
@@ -189,7 +190,7 @@ export abstract class UserService {
             set: outgoingInvitations.filter((id) => id !== userId),
           },
           friends: {
-            push: friendId,
+            push: userId,
           },
         },
       });
@@ -288,6 +289,42 @@ export abstract class UserService {
         },
       },
     });
+  }
+  public static async deleteFriend(userId: string, friendId: string) {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    const friend = await prisma.user.findUnique({
+      where: {
+        id: friendId,
+      },
+    });
+
+    if (user && friend) {
+      const { friends: userFriends } = user;
+      const { friends: friendFriends } = friend;
+
+      await prisma.user.update({
+        where: { id: userId },
+        data: {
+          friends: {
+            set: friendFriends.filter((id) => id !== friendId),
+          },
+        },
+      });
+
+      await prisma.user.update({
+        where: { id: friendId },
+        data: {
+          friends: {
+            set: friendFriends.filter((id) => id !== userId),
+          },
+        },
+      });
+    }
   }
 
   public static async getUserKittiesDetails(id: string, isEnded: boolean) {
