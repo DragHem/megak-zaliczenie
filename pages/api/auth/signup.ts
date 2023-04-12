@@ -84,7 +84,6 @@ async function handler(
         return;
       }
     } catch (e) {
-      console.log(e);
       res.status(409).json({
         message: "Błąd serwera, prosimy spróbować później.",
         status: ErrorResponseStatus.error,

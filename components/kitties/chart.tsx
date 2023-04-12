@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactEcharts from "echarts-for-react";
-import echarts from "echarts";
 export const Chart = ({
   data,
 }: {
@@ -8,7 +7,6 @@ export const Chart = ({
 }) => {
   if (!data) return null;
   if (data.length == 0) data = [];
-  console.log(data)
   const theme = {
     darkMode: true,
     legend: {

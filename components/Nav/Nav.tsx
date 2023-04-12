@@ -8,8 +8,6 @@ import NavMenu from "./NavMenu";
 const Nav = () => {
   const { data } = useSession();
 
-  console.log(data);
-
   return (
     <div className="navbar sticky top-0 bg-base-300">
       <div className="flex-none sm:hidden">

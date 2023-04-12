@@ -13,8 +13,6 @@ async function UserFriendsHandler(req: NextApiRequest, res: NextApiResponse) {
         try {
           const { id: friendId } = req.query;
 
-          console.log({ friendId, userId: session.user.id });
-
           if (typeof friendId === "string") {
             await UserService.deleteFriend(session.user.id, friendId);
 

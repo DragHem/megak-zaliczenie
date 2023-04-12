@@ -1,13 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import {Product} from "../../../interfaces/product/product";
-import {KittyService} from "../../../services";
-
+import { KittyService } from "../../../services";
 
 const kittyEnd = async (req: NextApiRequest, res: NextApiResponse) => {
-    const {id,isEnded}:{id:string,isEnded:boolean}=req.body
+  const { id, isEnded }: { id: string; isEnded: boolean } = req.body;
 
-    console.log(id,isEnded)
-    await KittyService.changeStatus(id,isEnded)
+  await KittyService.changeStatus(id, isEnded);
+
+  res.end();
 };
 
 export default kittyEnd;

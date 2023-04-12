@@ -26,9 +26,7 @@ export abstract class PhotoUpload {
         imagePath,
         this.cloudinaryOptions
       );
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }
 
   static async extractBodyFromFormData(req: NextApiRequest) {
