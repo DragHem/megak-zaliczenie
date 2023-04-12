@@ -35,7 +35,7 @@ export const CreateKittyFirstStep = ({dispatch,state}:Props) => {
         dispatch({type:e.target.id ,payload:e.target.value})
     }
   return (
-    <div className={"grid w-5/6 m-5 place-items-center "}>
+    <div className={"grid w-5/6 overflow-y-auto m-5 place-items-center "}>
       <Divider />
 
       <input

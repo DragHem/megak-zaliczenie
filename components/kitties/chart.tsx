@@ -8,6 +8,7 @@ export const Chart = ({
 }) => {
   if (!data) return null;
   if (data.length == 0) data = [];
+  console.log(data)
   const theme = {
     darkMode: true,
     legend: {

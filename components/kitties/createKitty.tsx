@@ -29,7 +29,6 @@ interface Action{
 
 function setData(state:State,action:Action):State{
     const {type,payload}=action;
-    console.log(payload)
     switch(type) {
         case "name":
             state.data.name=payload as string
@@ -49,14 +48,14 @@ function setData(state:State,action:Action):State{
             state.data.totalValue=payload as number
             break;
     }
-    console.log(state)
     return state;
 }
 
 export const CreateKitty = () => {
     const {data}=useSession()
+
   const [step, setStep] = useState<number>(1);
-  const [state, dispatch] = useReducer(setData,{data:  {userId: "",
+  const [state, dispatch] = useReducer(setData,{data:  {userId: data?data.user.id:"",
         name: "",
         description: "",
         totalValue: 0,
