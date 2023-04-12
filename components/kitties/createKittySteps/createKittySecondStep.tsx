@@ -1,7 +1,9 @@
-import React, { useReducer, useState } from "react";
+import React, {useEffect, useReducer, useState} from "react";
 import Button from "../../common/Button";
 import {Product} from "../../../interfaces/product/product";
 import Divider from "../../common/Divider";
+import {UserService} from "../../../services";
+import {useSession} from "next-auth/react";
 
 interface State{
     data: {
@@ -27,15 +29,33 @@ interface Props{
 
 
 export const CreateKittySecondStep = ({dispatch,state}:Props) => {
-  const friends = [
-    { id: "1", nickname: "jakub1", name: "jakub1" },
-    { id: "2", nickname: "jakub2", name: "jakub2" },
-    { id: "3", nickname: "jakub3", name: "jakub3" },
-    { id: "4", nickname: "jakub4", name: "jakub4" },
-  ];
-
+    const {data}=useSession()
+    const [friends,setFriends]=useState<{id:string,nickname:string,name:string}[]>(
+        [
+            { id: "1", nickname: "jakub1", name: "jakub1" },
+            { id: "2", nickname: "jakub2", name: "jakub2" },
+            { id: "3", nickname: "jakub3", name: "jakub3" },
+            { id: "4", nickname: "jakub4", name: "jakub4" },
+        ]
+    )
   const [users,setUsers]=useState<{id:string,nickname:string,name:string}[]>(state.data.users)
     const [user,setUser]=useState<{id:string,nickname:string,name:string}>()
+
+    useEffect(()=>{
+        (async()=>{
+            console.log(data?.user.email)
+            const friends=await fetch('/api/kitty/getFriends',{
+                method:'POST',
+                body: JSON.stringify({email:data?.user.email}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const copyFriends=await friends.json()
+            copyFriends.push({id:data?.user.id,name:data?.user.name,nickname:""})
+        setFriends(copyFriends)})();
+    },[])
+
 const handleOnChange=(e:React.ChangeEvent<HTMLSelectElement>)=>{
 
       const user=friends.find(user=>user.id==e.target.value)
@@ -49,7 +69,7 @@ const handleSubmit=()=>{
           // @ts-ignore
           const unique = [...new Map(copy.map(item =>
               [item["id"], item])).values()];
-          console.log(unique)
+
           setUsers(unique);
           dispatch({type: "user", payload: unique})
       }
@@ -61,12 +81,13 @@ const handleDelete=(id:string)=>{
     dispatch({type: "user", payload: copy})
 }
 
-console.log(users)
+
 
   return (
-      <div className={"grid m-5 place-items-center"}>
+      <div className={"grid m-5 overflow-y-auto place-items-center"}>
           <Divider />
-        <div className={"flex mt-5 mb-5 w-96"}>
+
+            <Button primary onClick={handleSubmit}>Dodaj znajomego</Button>
           <select onChange={(e)=>handleOnChange(e)} className="select select-bordered select-lg w-full max-w-xs">
             <option  selected disabled>
               Wybierz Przyjaciela z listy
@@ -75,9 +96,9 @@ console.log(users)
               <option value={x.id}>{x.name}</option>
             ))}
           </select>
-            <Button primary onClick={handleSubmit}>Dodaj znajomego</Button>
 
-        </div>
+
+
           <div className={"content-center h-64 overflow-y-scroll scrollbar-hide"}>
           {users.map(x=><p >{x.name} <Button primary onClick={()=>handleDelete(x.id)}>Usuń</Button></p>)}
           </div>
