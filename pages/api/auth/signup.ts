@@ -69,14 +69,14 @@ async function handler(
         activationLink
       );
 
-      const verifyMail = await MailModule.sendMail(
-        email,
-        "Kitty Project - Rejestracja",
-        `${process.env.NEXTAUTH_URL}auth/activate/${activationLink}`,
-        "Kitty Project - Rejestracja"
-      );
+      // const verifyMail = await MailModule.sendMail(
+      //   email,
+      //   "Kitty Project - Rejestracja",
+      //   `${process.env.NEXTAUTH_URL}auth/activate/${activationLink}`,
+      //   "Kitty Project - Rejestracja"
+      // );
 
-      if (newUser && verifyMail) {
+      if (newUser) {
         res.status(201).json({
           message: "Rejestracja przebiegła pomyślnie.",
           status: ErrorResponseStatus.success,
