@@ -72,7 +72,7 @@ async function handler(
       const verifyMail = await MailModule.sendMail(
         email,
         "Kitty Project - Rejestracja",
-        `https://kitty-eight.vercel.app/auth/activate/${activationLink}`,
+        `${process.env.NEXTAUTH_URL}auth/activate/${activationLink}`,
         "Kitty Project - Rejestracja"
       );
 
@@ -84,6 +84,7 @@ async function handler(
         return;
       }
     } catch (e) {
+      console.log(e);
       res.status(409).json({
         message: "Błąd serwera, prosimy spróbować później.",
         status: ErrorResponseStatus.error,
