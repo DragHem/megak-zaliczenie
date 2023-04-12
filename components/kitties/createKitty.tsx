@@ -53,8 +53,9 @@ function setData(state:State,action:Action):State{
 
 export const CreateKitty = () => {
     const {data}=useSession()
+
   const [step, setStep] = useState<number>(1);
-  const [state, dispatch] = useReducer(setData,{data:  {userId: "",
+  const [state, dispatch] = useReducer(setData,{data:  {userId: data?data.user.id:"",
         name: "",
         description: "",
         totalValue: 0,

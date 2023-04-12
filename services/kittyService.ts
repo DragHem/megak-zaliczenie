@@ -13,6 +13,7 @@ export abstract class KittyService {
         description: true,
         totalValue: true,
         users: true,
+        isEnded: true,
         owner: {
           select: {
             id: true,

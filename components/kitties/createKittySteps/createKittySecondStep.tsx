@@ -52,10 +52,10 @@ export const CreateKittySecondStep = ({dispatch,state}:Props) => {
                 },
             });
             const copyFriends=await friends.json()
-            copyFriends.push({id:data?.user.id,name:data?.user.name,nickname:""})
+            copyFriends.push({id:data?.user.id,name:data?.user.name+" (ty)",nickname:""})
         setFriends(copyFriends)})();
     },[])
-
+    console.log(state.data)
 const handleOnChange=(e:React.ChangeEvent<HTMLSelectElement>)=>{
 
       const user=friends.find(user=>user.id==e.target.value)

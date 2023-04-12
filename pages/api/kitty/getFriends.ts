@@ -9,7 +9,6 @@ const createKitty = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if(resp) {
         const Friends = await UserService.getUserFriends(resp.friends);
-        console.log(Friends,resp.friends)
         res.json(Friends);
     }
     else{

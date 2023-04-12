@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 
 interface Props {
   kitty: kittyList;
+  isEnded:boolean;
 }
 
-export const KittyCard = ({ kitty }: Props) => {
+export const KittyCard = ({ kitty,isEnded }: Props) => {
   const { query } = useRouter();
 
   return (
@@ -15,14 +16,16 @@ export const KittyCard = ({ kitty }: Props) => {
         className={`card mt-3 w-full text-primary-content ${
           query.id === undefined
             ? "bg-yellow-600"
-            : query.id[0] === kitty.id
+            : !isEnded?query.id[0] === kitty.id
             ? "bg-warning"
-            : "bg-yellow-600"
+            : "bg-yellow-600":query.id[0] === kitty.id
+                  ? "bg-yellow-200"
+                  : "bg-yellow-300"
         }`}
       >
         <div className="card-body">
           <h2 className="card-title">{kitty.name}</h2>
-          <p>{kitty.description}</p>
+          <p><b>Kwota całkowita : </b> {kitty.totalValue} zł</p>
         </div>
       </div>
     </Link>
