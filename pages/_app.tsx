@@ -24,6 +24,10 @@ export default function App({
         <title>Kitty Project</title>
         <meta name="theme-color" content="#000000" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta
+          name="description"
+          content="Najlepsza aplikacja do tworzenia zrzutek w grupie i zarzadzania nimi!"
+        />
       </Head>
       <SessionProvider session={session}>
         <PopupProvider>

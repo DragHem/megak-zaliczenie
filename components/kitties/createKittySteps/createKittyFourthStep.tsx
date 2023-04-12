@@ -2,6 +2,7 @@ import { Product } from "../../../interfaces/product/product";
 import React, { useEffect, useState } from "react";
 import Divider from "../../common/Divider";
 import Button from "../../common/Button";
+import { useRouter } from "next/router";
 
 interface State {
   data: {
@@ -28,8 +29,10 @@ interface Props {
 }
 
 export const CreateKittyFourthStep = ({ state, dispatch }: Props) => {
+  const router = useRouter();
+
   const [total, setTotal] = useState<number>(0);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+
   useEffect(() => {
     const totalValue = state.data.product.reduce(
       (acc, curr) => curr.price + acc,
@@ -46,15 +49,16 @@ export const CreateKittyFourthStep = ({ state, dispatch }: Props) => {
     const { name, description, product, totalValue, userId, users } =
       state.data;
     if (name.length && description.length && product.length && users.length) {
-    }
+      const resp = await fetch("/api/kitty/createKitty", {
+        method: "POST",
+        body: JSON.stringify(state.data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    const resp = await fetch("/api/kitty/createKitty", {
-      method: "POST",
-      body: JSON.stringify(state.data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+      await router.push("/kitty").then(() => router.reload());
+    }
   };
 
   return (
