@@ -1,6 +1,8 @@
 # Kitty Project
 Aplikacja do zarządzania zakupami w grupie.
 
+<i>Na potrzeby dema aplikacji i problemy z wysyłaniem maili po wrzuceniu aplikacji na Vercel, zostały wyłączone maile aktywacyjne</i>
+
 ## Uruchomienie
 
 ```bash

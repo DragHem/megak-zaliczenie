@@ -22,7 +22,7 @@ model User {
   nickname       String?
   isVirtual      Boolean  @default(false)
   createdAt      DateTime @default(now())
-  isActive       Boolean  @default(false)
+  isActive       Boolean  @default(true)
   changePassword String?
   activationLink String?  @unique
   kitties        Kitty[]
